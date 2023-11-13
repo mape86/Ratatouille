@@ -16,6 +16,7 @@
 		495CB0B62B02B94A009C0FAB /* RatatouilleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CB0B52B02B94A009C0FAB /* RatatouilleTests.swift */; };
 		495CB0C02B02B94A009C0FAB /* RatatouilleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CB0BF2B02B94A009C0FAB /* RatatouilleUITests.swift */; };
 		495CB0C22B02B94A009C0FAB /* RatatouilleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CB0C12B02B94A009C0FAB /* RatatouilleUITestsLaunchTests.swift */; };
+		495CB0D12B02B9A0009C0FAB /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CB0D02B02B9A0009C0FAB /* SplashScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		495CB0BB2B02B94A009C0FAB /* RatatouilleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RatatouilleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CB0BF2B02B94A009C0FAB /* RatatouilleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatatouilleUITests.swift; sourceTree = "<group>"; };
 		495CB0C12B02B94A009C0FAB /* RatatouilleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatatouilleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		495CB0D02B02B9A0009C0FAB /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 		495CB09E2B02B949009C0FAB /* Ratatouille */ = {
 			isa = PBXGroup;
 			children = (
+				495CB0CE2B02B988009C0FAB /* Views */,
 				495CB09F2B02B949009C0FAB /* RatatouilleApp.swift */,
 				495CB0A12B02B949009C0FAB /* ContentView.swift */,
 				495CB0A32B02B94A009C0FAB /* Assets.xcassets */,
@@ -131,6 +134,22 @@
 				495CB0C12B02B94A009C0FAB /* RatatouilleUITestsLaunchTests.swift */,
 			);
 			path = RatatouilleUITests;
+			sourceTree = "<group>";
+		};
+		495CB0CE2B02B988009C0FAB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				495CB0CF2B02B993009C0FAB /* SplashScreen */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		495CB0CF2B02B993009C0FAB /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				495CB0D02B02B9A0009C0FAB /* SplashScreenView.swift */,
+			);
+			path = SplashScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +284,7 @@
 			files = (
 				495CB0A92B02B94A009C0FAB /* Persistence.swift in Sources */,
 				495CB0A22B02B949009C0FAB /* ContentView.swift in Sources */,
+				495CB0D12B02B9A0009C0FAB /* SplashScreenView.swift in Sources */,
 				495CB0AC2B02B94A009C0FAB /* Ratatouille.xcdatamodeld in Sources */,
 				495CB0A02B02B949009C0FAB /* RatatouilleApp.swift in Sources */,
 			);
