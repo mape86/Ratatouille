@@ -19,7 +19,7 @@ struct SplashScreenView: View {
     
     var body: some View {
         if isActive {
-            ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            SearchView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         } else {
             ZStack {
                 Color(.black)
