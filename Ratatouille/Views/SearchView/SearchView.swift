@@ -10,6 +10,13 @@ import CoreData
 
 struct SearchView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    
+    @State private var searchByAreaIsOpen = false
+    @State private var searchByCategoryIsOpen = false
+    @State private var searchByIngredientIsOpen = false
+    @State private var searchByTextIsOpen = false
+    
+    @State private var searchResults: [String] = []
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
@@ -29,16 +36,45 @@ struct SearchView: View {
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Button(action: {
+                        searchByAreaIsOpen.toggle()
+                    }) {
+                        Image(systemName: "globe.europe.africa")
+                    }
+
+                    Button(action: {
+                        searchByCategoryIsOpen.toggle()
+                    }) {
+                        Image(systemName: "c.circle")
+                    }
+
+                    Button(action: {
+                        searchByIngredientIsOpen.toggle()
+                    }) {
+                        Image(systemName: "carrot")
+                    }
+
+                    Button(action: {
+                        searchByTextIsOpen.toggle()
+                    }) {
+                        Image(systemName: "magnifyingglass")
                     }
                 }
             }
-            Text("Select an item")
+            .sheet(isPresented: $searchByAreaIsOpen) {
+                SearchByAreaView(searchTerm: { results in
+                    self.searchResults = results},
+                                 isPresented: $searchByAreaIsOpen)
+            }
+            .sheet(isPresented: $searchByCategoryIsOpen) {
+                SearchByCategoryView(searchTerm: { results in
+                    self.searchResults = results},
+                                     isPresented: $searchByCategoryIsOpen)
+            }
+            .sheet(isPresented: $searchByIngredientIsOpen) {
+              
+            }
         }
     }
 
@@ -82,5 +118,5 @@ private let itemFormatter: DateFormatter = {
 }()
 
 #Preview {
-    SearchView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    SearchView()
 }

@@ -54,3 +54,35 @@ struct PersistenceController {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
 }
+
+extension PersistenceController {
+    
+    func saveAreas(_ areas: [String], completed: @escaping (Error?) -> Void) {
+        let context = container.viewContext
+        areas.forEach { areaName in
+            let newArea = AreaEntity(context: context)
+            newArea.areaName = areaName
+        }
+        
+        do {
+            try context.save()
+            completed(nil)
+        } catch {
+            completed(error)
+        }
+    }
+    
+    func deleteAreas(completed: @escaping (Error?) -> Void) {
+        let context = container.viewContext
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = AreaEntity.fetchRequest()
+        let delete = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(delete)
+            try context.save()
+            completed(nil)
+        } catch {
+            completed(error)
+        }
+    }
+}
