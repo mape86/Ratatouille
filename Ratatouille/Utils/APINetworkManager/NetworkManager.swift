@@ -13,6 +13,7 @@ final class NetworkManager: ObservableObject {
     static let shared = NetworkManager()
     @Published var areas: [MealArea] = []
     @Published var categories: [MealCategoryList] = []
+    @Published var ingredientsList: [MealIngredientList] = []
     
     //MARK: Area URLS
     //List of all areas
@@ -61,9 +62,6 @@ final class NetworkManager: ObservableObject {
         }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            if let data = data, let jsonString = String(data: data, encoding: .utf8) {
-                  print(jsonString)
-              }
             guard let data = data, error == nil else {return}
             
             do {
@@ -80,6 +78,27 @@ final class NetworkManager: ObservableObject {
     }
     
     //MARK: Ingredient Functions
+    
+    func fetchIngredientList(completion: @escaping () -> Void) {
+        guard let url = URL(string: ingredientListURL) else {
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let data = data, error == nil else {return}
+            
+            do {
+                let decoder = JSONDecoder()
+                let ingredientResponse = try decoder.decode(MealIngredientListResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self?.ingredientsList = ingredientResponse.meals
+                    completion()
+                }
+            }catch {
+                print(error.localizedDescription)
+            }
+        }.resume()
+    }
 }
 
 

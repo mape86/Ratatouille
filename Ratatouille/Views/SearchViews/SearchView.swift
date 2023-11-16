@@ -25,6 +25,7 @@ struct SearchView: View {
 
     var body: some View {
         NavigationView {
+            
             List {
                 ForEach(items) { item in
                     NavigationLink {
@@ -37,43 +38,75 @@ struct SearchView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Spacer()
                     Button(action: {
                         searchByAreaIsOpen.toggle()
                     }) {
                         Image(systemName: "globe.europe.africa")
+                            .frame(maxHeight: 25)
                     }
+                    .padding(.horizontal)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
+                    Spacer()
 
                     Button(action: {
                         searchByCategoryIsOpen.toggle()
                     }) {
                         Image(systemName: "c.circle")
+                            .frame(maxHeight: 25)
                     }
+                    .padding(.horizontal)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
+                    Spacer()
 
                     Button(action: {
                         searchByIngredientIsOpen.toggle()
                     }) {
                         Image(systemName: "carrot")
+                            .frame(maxHeight: 25)
                     }
+                    .padding(.horizontal)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
+                    Spacer()
 
                     Button(action: {
                         searchByTextIsOpen.toggle()
                     }) {
                         Image(systemName: "magnifyingglass")
+                            .frame(maxHeight: 25)
                     }
+                    .padding(.horizontal)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
                 }
             }
             .sheet(isPresented: $searchByAreaIsOpen) {
                 SearchByAreaView(searchTerm: { results in
                     self.searchResults = results},
                                  isPresented: $searchByAreaIsOpen)
+                .presentationDetents([.large, .medium])
+                .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $searchByCategoryIsOpen) {
                 SearchByCategoryView(searchTerm: { results in
                     self.searchResults = results},
                                      isPresented: $searchByCategoryIsOpen)
+                .presentationDetents([.large, .medium])
+                .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $searchByIngredientIsOpen) {
-              
+                SearchByIngredientView(searchTerm: { results in
+                    self.searchResults = results},
+                                       isPresented: $searchByIngredientIsOpen)
+                .presentationDetents([.large, .medium])
+                .presentationDragIndicator(.visible)
             }
         }
     }

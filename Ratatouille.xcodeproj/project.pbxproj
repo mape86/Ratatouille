@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49184C152B06BA65005100CE /* CustomLoadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49184C142B06BA65005100CE /* CustomLoadButton.swift */; };
 		492261E42B04063900714F6B /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492261E32B04063900714F6B /* CustomTabView.swift */; };
 		492261EA2B04083A00714F6B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492261E92B04083A00714F6B /* SettingsView.swift */; };
 		492261ED2B04117000714F6B /* MyRecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492261EC2B04117000714F6B /* MyRecipesView.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49184C142B06BA65005100CE /* CustomLoadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoadButton.swift; sourceTree = "<group>"; };
 		492261E32B04063900714F6B /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		492261E92B04083A00714F6B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		492261EC2B04117000714F6B /* MyRecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipesView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49184C102B06B37B005100CE /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		49184C132B06BA41005100CE /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				49184C142B06BA65005100CE /* CustomLoadButton.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		492261E22B04062A00714F6B /* TabView */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,7 +130,7 @@
 			path = TabView;
 			sourceTree = "<group>";
 		};
-		492261E52B04080900714F6B /* SearchView */ = {
+		492261E52B04080900714F6B /* SearchViews */ = {
 			isa = PBXGroup;
 			children = (
 				495CB0A12B02B949009C0FAB /* SearchView.swift */,
@@ -122,7 +139,7 @@
 				4962A23D2B06113900935707 /* SearchByIngredientView.swift */,
 				4962A23F2B06114600935707 /* SearchByTextView.swift */,
 			);
-			path = SearchView;
+			path = SearchViews;
 			sourceTree = "<group>";
 		};
 		492261E62B04081500714F6B /* SettingsView */ = {
@@ -213,8 +230,10 @@
 				495CB0A52B02B94A009C0FAB /* Preview Content */,
 				495CB0AA2B02B94A009C0FAB /* Ratatouille.xcdatamodeld */,
 				495CB09F2B02B949009C0FAB /* RatatouilleApp.swift */,
+				49184C132B06BA41005100CE /* UI */,
 				498320F72B052717002B8502 /* Utils */,
 				4962A2432B0620E000935707 /* ViewModels */,
+				49184C102B06B37B005100CE /* ViewModifiers */,
 				495CB0CE2B02B988009C0FAB /* Views */,
 			);
 			path = Ratatouille;
@@ -250,7 +269,7 @@
 			children = (
 				492261EB2B04112F00714F6B /* MyRecipes */,
 				492261E62B04081500714F6B /* SettingsView */,
-				492261E52B04080900714F6B /* SearchView */,
+				492261E52B04080900714F6B /* SearchViews */,
 				492261E22B04062A00714F6B /* TabView */,
 				495CB0CF2B02B993009C0FAB /* SplashScreen */,
 			);
@@ -432,6 +451,7 @@
 				492261EA2B04083A00714F6B /* SettingsView.swift in Sources */,
 				492261ED2B04117000714F6B /* MyRecipesView.swift in Sources */,
 				4962A2462B06215600935707 /* CoreDataManager.swift in Sources */,
+				49184C152B06BA65005100CE /* CustomLoadButton.swift in Sources */,
 				498320FA2B05272F002B8502 /* NetworkManager.swift in Sources */,
 				4939D3612B04DB6B003D9B95 /* AreaModel.swift in Sources */,
 				4962A23C2B06112900935707 /* SearchByCategoryView.swift in Sources */,

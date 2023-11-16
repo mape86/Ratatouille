@@ -21,8 +21,11 @@ struct SearchByCategoryView: View {
     
     var body: some View {
         VStack {
-            Text("Søk etter mat etter kategori")
-            Button("Last inn kategorier") {
+            Text("Søk kategori")
+                .font(.title.bold())
+                .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .padding()
+            CustomLoadButton(title: "Last inn kategorier") {
                 networkManager.fetchCategoryList{
                     if let firstCategory = networkManager.categories.first {
                         chosenCategory = firstCategory.strCategory

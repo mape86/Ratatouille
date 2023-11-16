@@ -21,8 +21,11 @@ struct SearchByAreaView: View {
     
     var body: some View {
         VStack {
-            Text("Søk etter mat fra område")
-            Button("Last inn områder") {
+            Text("Søk område")
+                .font(.title.bold())
+                .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .padding()
+            CustomLoadButton(title: "Last inn områder") {
                           networkManager.fetchAreaList{
                               if let firstArea = networkManager.areas.first {
                                   chosenArea = firstArea.strArea

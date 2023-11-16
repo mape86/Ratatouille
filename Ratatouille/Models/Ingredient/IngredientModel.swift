@@ -7,17 +7,30 @@
 
 import Foundation
 
-struct MealIngredient: Decodable {
+struct MealIngredientList: Decodable, Hashable, Identifiable {
+    
+    let strIngredient: String
+    var id: String {strIngredient}
+}
+
+struct MealIngredient: Decodable, Hashable, Identifiable {
     
     let idIngredient: String
     let strIngredient: String
     let strDescription: String?
     let strType: String?
     
+    var id: String {idIngredient}
 }
 
 struct MealIngredientResponse: Decodable {
     
-    let ingredients: [MealIngredient]
+    let meals: [MealIngredient]
+    
+}
+
+struct MealIngredientListResponse: Decodable {
+    
+    let meals: [MealIngredientList]
     
 }
