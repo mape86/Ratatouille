@@ -2,19 +2,23 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23B81" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AreaEntity" representedClassName="AreaEntity" syncable="YES" codeGenerationType="class">
         <attribute name="areaName" optional="YES" attributeType="String"/>
-        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MealEntity" inverseName="relationship" inverseEntity="MealEntity"/>
+        <attribute name="flagImage" optional="YES" attributeType="String"/>
+        <attribute name="isSaved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="meals" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MealEntity" inverseName="area" inverseEntity="MealEntity"/>
     </entity>
     <entity name="CategoryEntity" representedClassName="CategoryEntity" syncable="YES" codeGenerationType="class">
         <attribute name="categoryDescription" optional="YES" attributeType="String"/>
         <attribute name="categoryImage" optional="YES" attributeType="String"/>
         <attribute name="categoryName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
-        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MealEntity" inverseName="relationship1" inverseEntity="MealEntity"/>
+        <attribute name="isSaved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="meals" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MealEntity" inverseName="category" inverseEntity="MealEntity"/>
     </entity>
     <entity name="IngredientEntity" representedClassName="IngredientEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="ingredientDescription" optional="YES" attributeType="String"/>
         <attribute name="ingredientName" optional="YES" attributeType="String"/>
+        <attribute name="ingredientThumb" optional="YES" attributeType="String"/>
         <attribute name="ingredientType" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
@@ -29,7 +33,7 @@
         <attribute name="mealImage" optional="YES" attributeType="String"/>
         <attribute name="mealInstructions" optional="YES" attributeType="String"/>
         <attribute name="mealName" optional="YES" attributeType="String"/>
-        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AreaEntity" inverseName="relationship" inverseEntity="AreaEntity"/>
-        <relationship name="relationship1" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryEntity" inverseName="relationship" inverseEntity="CategoryEntity"/>
+        <relationship name="area" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AreaEntity" inverseName="meals" inverseEntity="AreaEntity"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryEntity" inverseName="meals" inverseEntity="CategoryEntity"/>
     </entity>
 </model>

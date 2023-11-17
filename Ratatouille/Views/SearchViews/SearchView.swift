@@ -16,9 +16,6 @@ struct SearchView: View {
     @State private var searchByIngredientIsOpen = false
     @State private var searchByTextIsOpen = false
     
-    @State private var searchResultsArea: [FilteredArea] = []
-    @State private var searchResultsCategory: [FilteredCategory] = []
-    @State private var searchResultsIngredient: [MealIngredient] = []
     @State private var searchResults: [SharedSearchResult] = []
 
     @FetchRequest(

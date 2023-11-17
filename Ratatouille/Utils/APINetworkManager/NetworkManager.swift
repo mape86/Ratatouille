@@ -13,7 +13,7 @@ final class NetworkManager: ObservableObject {
     static let shared = NetworkManager()
     
     //Lists
-    @Published var areas: [MealArea] = []
+    @Published var areas: [MealAreaList] = []
     @Published var categories: [MealCategoryList] = []
     @Published var ingredientsList: [MealIngredientList] = []
     
@@ -53,7 +53,7 @@ final class NetworkManager: ObservableObject {
             
             do {
                 let decoder = JSONDecoder()
-                let areaResponse = try decoder.decode(MealAreaResponse.self, from: data)
+                let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
                 DispatchQueue.main.async {
                     self?.areas = areaResponse.meals
                     completion()
@@ -82,7 +82,7 @@ final class NetworkManager: ObservableObject {
             
             do {
                 let decoder = JSONDecoder()
-                let filteredAreaResponse = try decoder.decode(FilteredAreaResponse.self, from: data)
+                let filteredAreaResponse = try decoder.decode(MealAreaResponse.self, from: data)
                 let searchResult = filteredAreaResponse.meals.map { area in
                     SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, description: nil, type: nil)
                 }

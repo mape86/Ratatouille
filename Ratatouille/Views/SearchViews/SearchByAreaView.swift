@@ -40,11 +40,15 @@ struct SearchByAreaView: View {
                     }
                 }
             }
-//            .onAppear{
-//                networkManager.fetchAreaList()
-//            }
            
         }
+//        .onAppear{
+//            networkManager.fetchAreaList{
+//                if let firstArea = networkManager.areas.first {
+//                    chosenArea = firstArea.strArea
+//                }
+//            }
+//        }
         
         Button("Søk") {
             networkManager.fetchMealsByArea(area: chosenArea) { mealName in
