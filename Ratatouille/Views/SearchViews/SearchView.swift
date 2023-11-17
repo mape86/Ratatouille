@@ -16,7 +16,10 @@ struct SearchView: View {
     @State private var searchByIngredientIsOpen = false
     @State private var searchByTextIsOpen = false
     
-    @State private var searchResults: [String] = []
+    @State private var searchResultsArea: [FilteredArea] = []
+    @State private var searchResultsCategory: [FilteredCategory] = []
+    @State private var searchResultsIngredient: [MealIngredient] = []
+    @State private var searchResults: [SharedSearchResult] = []
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
@@ -26,15 +29,37 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+//            List {
+//                ForEach(items) { item in
+//                    NavigationLink {
+//                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+//                    } label: {
+//                        Text(item.timestamp!, formatter: itemFormatter)
+//                    }
+//                }
+//                .onDelete(perform: deleteItems)
+//            }
+            List{
+                ForEach($searchResults) { result in
+                    HStack{
+                        if let thumb = result.thumb.wrappedValue, let url = URL(string: thumb) {
+                            AsyncImage(url: url) { image in
+                                image.resizable()
+                                    .scaledToFit()
+                                    .frame(width: 70, height: 70)
+                                    .cornerRadius(10)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        } else {
+                            Image(systemName: "photo")
+                                .resizable()
+                                .frame(width: 70, height: 70)
+                                .cornerRadius(10)
+                        }
+                        Text(result.name.wrappedValue)
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -89,25 +114,28 @@ struct SearchView: View {
             }
             .sheet(isPresented: $searchByAreaIsOpen) {
                 SearchByAreaView(searchTerm: { results in
-                    self.searchResults = results},
-                                 isPresented: $searchByAreaIsOpen)
+                    self.searchResults = results
+                    self.searchByAreaIsOpen = false
+                }, isPresented: $searchByAreaIsOpen)
                 .presentationDetents([.large, .medium])
                 .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $searchByCategoryIsOpen) {
                 SearchByCategoryView(searchTerm: { results in
-                    self.searchResults = results},
-                                     isPresented: $searchByCategoryIsOpen)
+                    self.searchResults = results
+                    self.searchByCategoryIsOpen = false
+                }, isPresented: $searchByCategoryIsOpen)
                 .presentationDetents([.large, .medium])
                 .presentationDragIndicator(.visible)
             }
-            .sheet(isPresented: $searchByIngredientIsOpen) {
-                SearchByIngredientView(searchTerm: { results in
-                    self.searchResults = results},
-                                       isPresented: $searchByIngredientIsOpen)
-                .presentationDetents([.large, .medium])
-                .presentationDragIndicator(.visible)
-            }
+//            .sheet(isPresented: $searchByIngredientIsOpen){
+//                SearchByIngredientView(searchTerm: { results in
+//                    self.searchResultsIngredient = results
+//                    self.searchByIngredientIsOpen = false
+//                }, isPresented: $searchByIngredientIsOpen)
+//                .presentationDetents([.large, .medium])
+//                .presentationDragIndicator(.visible)
+//            }
         }
     }
 

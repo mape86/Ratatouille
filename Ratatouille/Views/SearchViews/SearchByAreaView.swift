@@ -11,7 +11,7 @@ struct SearchByAreaView: View {
     
     @Environment(\.managedObjectContext) var managedObjectContext
     
-    var searchTerm: ([String]) -> Void
+    var searchTerm: ([SharedSearchResult]) -> Void
     @ObservedObject var networkManager = NetworkManager.shared
     @State private var areaList: [String] = []
     @State private var chosenArea: String = ""
@@ -47,9 +47,10 @@ struct SearchByAreaView: View {
         }
         
         Button("Søk") {
-            let results = ["Test område 1", "test område 2"]
-            searchTerm(results)
-            isPresented = false
+            networkManager.fetchMealsByArea(area: chosenArea) { mealName in
+                searchTerm(mealName)
+                isPresented = false
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.gray.opacity(0.5)))

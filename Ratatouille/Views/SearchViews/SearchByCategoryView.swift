@@ -11,7 +11,7 @@ struct SearchByCategoryView: View {
     
     @Environment(\.managedObjectContext) var managedObjectContext
     
-    var searchTerm: ([String]) -> Void
+    var searchTerm: ([SharedSearchResult]) -> Void
     @ObservedObject var networkManager = NetworkManager.shared
     @State private var categoryList: [String] = []
     @State private var chosenCategory: String = ""
@@ -47,9 +47,10 @@ struct SearchByCategoryView: View {
         }
         
         Button("Søk") {
-            let results = ["Test område 1", "test område 2"]
-            searchTerm(results)
-            isPresented = false
+            networkManager.fetchMealsByCategory(category: chosenCategory) { categoryName in
+                searchTerm(categoryName)
+                isPresented = false
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.gray.opacity(0.5)))

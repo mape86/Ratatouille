@@ -11,23 +11,33 @@ import SwiftUI
 final class NetworkManager: ObservableObject {
     
     static let shared = NetworkManager()
+    
+    //Lists
     @Published var areas: [MealArea] = []
     @Published var categories: [MealCategoryList] = []
     @Published var ingredientsList: [MealIngredientList] = []
     
+    //Filtered
+//    @Published var filteredAreas: [FilteredArea] = []
+//    @Published var filteredCategories: [FilteredCategory] = []
+    
     //MARK: Area URLS
     //List of all areas
     private let areaListURL = "https://www.themealdb.com/api/json/v1/1/list.php?a=list"
+    private let filterByAreaURL = "https://www.themealdb.com/api/json/v1/1/filter.php?a="
     
     //MARK: Category URLS
     //List of all categories
     private let categoryListURL = "https://www.themealdb.com/api/json/v1/1/list.php?c=list"
     //Filter by category
     private let categoryFilterURL = "https://www.themealdb.com/api/json/v1/1/filter.php?c="
+    private let listAllMealCategoriesURL = "https://www.themealdb.com/api/json/v1/1/categories.php"
     
     //MARK: Ingredient URLS
     //List of all ingredients
     private let ingredientListURL = "https://www.themealdb.com/api/json/v1/1/list.php?i=list"
+    private let filterByIngredientURL = "https://www.themealdb.com/api/json/v1/1/filter.php?i="
+    private let ingredientImageURL = "https://www.themealdb.com/images/ingredients/"
     
     private init () {}
     
@@ -54,6 +64,40 @@ final class NetworkManager: ObservableObject {
         }.resume()
     }
     
+    func fetchMealsByArea(area: String, completion: @escaping ([SharedSearchResult]) -> Void) {
+        let urlString = "\(filterByAreaURL)\(area)"
+        guard let url = URL(string: urlString) else {
+            print("Error: Ugyldig URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Forespørsel til nettverk feilet: \(error?.localizedDescription ?? "Ukjent feil") ")
+                DispatchQueue.main.async {
+                    completion([])
+                }
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let filteredAreaResponse = try decoder.decode(FilteredAreaResponse.self, from: data)
+                let searchResult = filteredAreaResponse.meals.map { area in
+                    SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, description: nil, type: nil)
+                }
+                DispatchQueue.main.async {
+                    completion(searchResult)
+                }
+            }catch {
+                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    completion([])
+                }
+            }
+        }.resume()
+    }
+    
     //MARK: Category Functions
     
     func fetchCategoryList(completion: @escaping () -> Void) {
@@ -62,7 +106,9 @@ final class NetworkManager: ObservableObject {
         }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let data = data, error == nil else {return}
+            guard let data = data, error == nil else {
+                return
+            }
             
             do {
                 let decoder = JSONDecoder()
@@ -73,6 +119,40 @@ final class NetworkManager: ObservableObject {
                 }
             }catch {
                 print(error.localizedDescription)
+            }
+        }.resume()
+    }
+    
+    func fetchMealsByCategory(category: String, completion: @escaping ([SharedSearchResult]) -> Void) {
+        let urlString = "\(categoryFilterURL)\(category)"
+        guard let url = URL(string: urlString) else {
+            print("Error: Ugyldig URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Forespørsel til nettverk feilet: \(error?.localizedDescription ?? "Ukjent feil") ")
+                DispatchQueue.main.async {
+                    completion([])
+                }
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let filteredCategoryResponse = try decoder.decode(FilteredCategoryResponse.self, from: data)
+                let searchResult = filteredCategoryResponse.meals.map { category in
+                    SharedSearchResult(id: category.idMeal, name: category.strMeal, thumb: category.strMealThumb, description: nil, type: nil)
+                }
+                DispatchQueue.main.async {
+                    completion(searchResult)
+                }
+            }catch {
+                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    completion([])
+                }
             }
         }.resume()
     }
@@ -101,7 +181,41 @@ final class NetworkManager: ObservableObject {
     }
 }
 
+//MARK: FOR TESTING
 
+//    func fetchMealsByCategory(category: String, completion: @escaping ([FilteredCategory]) -> Void) {
+//        let urlString = "\(categoryFilterURL)\(category)"
+//        guard let url = URL(string: urlString) else {
+//            print("Error: Ugyldig URL")
+//            return
+//        }
+//
+//        URLSession.shared.dataTask(with: url) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print("Forespørsel til nettverk feilet: \(error?.localizedDescription ?? "Ukjent feil") ")
+//                DispatchQueue.main.async {
+//                    completion([])
+//                }
+//                return
+//            }
+//
+//            do {
+//                let decoder = JSONDecoder()
+//                let filteredCategoryResponse = try decoder.decode(FilteredCategoryResponse.self, from: data)
+//                DispatchQueue.main.async {
+////                    let filteredAreaNames = filteredAreaResponse.meals.map { $0.strMeal }
+//                    completion(filteredCategoryResponse.meals)
+//                }
+//            }catch {
+//                print(error.localizedDescription)
+//                DispatchQueue.main.async {
+//                    completion([])
+//                }
+//            }
+//        }.resume()
+//    }
+
+//    Alternativ til innhenting av data. Får ikke tak i data.
 
 //    func getAreaList(completed: @escaping (Result<[MealArea], NMError>) -> Void) {
 //        guard let url = URL(string: areaListURL) else {

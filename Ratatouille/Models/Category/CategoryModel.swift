@@ -14,6 +14,16 @@ struct MealCategoryList: Codable, Hashable, Identifiable {
     
 }
 
+struct FilteredCategory: Codable, Hashable, Identifiable {
+    
+    let strMeal: String
+    let strMealThumb: String
+    let idMeal: String
+    
+    var id: String {idMeal}
+    
+}
+
 struct MealCategory: Codable, Hashable, Identifiable {
     
     let idCategory: String
@@ -31,8 +41,14 @@ struct MealCategoryListResponse: Codable {
     
 }
 
+struct FilteredCategoryResponse: Codable {
+    
+    let meals: [FilteredCategory]
+    
+}
+
 struct MealCategoryResponse: Codable {
     
-    let meals: [MealCategory]
+    let categories: [MealCategory]
     
 }

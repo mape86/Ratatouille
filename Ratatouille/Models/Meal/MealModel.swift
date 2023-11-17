@@ -46,3 +46,11 @@ struct MealResponse: Decodable {
     let meals: [Meal]
     
 }
+
+struct SharedSearchResult: Identifiable {
+    let id: String
+    var name: String
+    var thumb: String?
+    var description: String?
+    var type: String?
+}
