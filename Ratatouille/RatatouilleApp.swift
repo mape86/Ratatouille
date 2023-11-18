@@ -9,13 +9,13 @@ import SwiftUI
 
 @main
 struct RatatouilleApp: App {
-    let persistenceController = PersistenceController.shared
+
+    let coreDataManager = CoreDataManager.shared
 
     var body: some Scene {
         WindowGroup {
             SplashScreenView()
-//            ContentView()
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(\.managedObjectContext, coreDataManager.viewContext)
         }
     }
 }

@@ -26,16 +26,7 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             
-//            List {
-//                ForEach(items) { item in
-//                    NavigationLink {
-//                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-//                    } label: {
-//                        Text(item.timestamp!, formatter: itemFormatter)
-//                    }
-//                }
-//                .onDelete(perform: deleteItems)
-//            }
+
             List{
                 ForEach($searchResults) { result in
                     HStack{

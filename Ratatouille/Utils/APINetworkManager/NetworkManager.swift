@@ -43,26 +43,63 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Area Functions
     
-    func fetchAreaList(completion: @escaping () -> Void) {
+    func fetchAreaList(completion: @escaping ([String]) -> Void) {
         guard let url = URL(string: areaListURL) else {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let data = data, error == nil else {return}
+        URLSession.shared.dataTask(with: url) {  data, response, error in
+            guard let data = data, error == nil else {
+                print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
+                completion([])
+                return}
             
             do {
                 let decoder = JSONDecoder()
                 let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
+                let areaNames = areaResponse.meals.map { $0.strArea}
                 DispatchQueue.main.async {
-                    self?.areas = areaResponse.meals
-                    completion()
+//                    self?.areas = areaResponse.meals
+//
+//                    PersistenceController.shared.saveAreas(areas: areaResponse.meals.map {$0.strArea}) { error in
+//                        if let error = error {
+//                            print("Det skjedde en feil ved lagring av områder. Kunne ikke lagre! \(error.localizedDescription)")
+//                        }
+//                    }
+                    completion(areaNames)
                 }
             }catch {
-                print(error.localizedDescription)
+                print("Feilet ved dekoding \(error.localizedDescription)")
+                completion([])
             }
         }.resume()
     }
+//    func fetchAreaList(completion: @escaping () -> Void) {
+//        guard let url = URL(string: areaListURL) else {
+//            return
+//        }
+//        
+//        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+//            guard let data = data, error == nil else {return}
+//            
+//            do {
+//                let decoder = JSONDecoder()
+//                let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
+//                DispatchQueue.main.async {
+//                    self?.areas = areaResponse.meals
+//                    
+//                    PersistenceController.shared.saveAreas(areas: areaResponse.meals.map {$0.strArea}) { error in
+//                        if let error = error {
+//                            print("Det skjedde en feil ved lagring av områder. Kunne ikke lagre! \(error.localizedDescription)")
+//                        }
+//                    }
+//                    completion()
+//                }
+//            }catch {
+//                print(error.localizedDescription)
+//            }
+//        }.resume()
+//    }
     
     func fetchMealsByArea(area: String, completion: @escaping ([SharedSearchResult]) -> Void) {
         let urlString = "\(filterByAreaURL)\(area)"

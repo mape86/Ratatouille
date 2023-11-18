@@ -22,7 +22,7 @@ struct CustomTabView: View {
                     Label("Mine Oppskrifter", systemImage: "fork.knife")
                 }
                 .tag(0)
-            SearchView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            SearchView()
                 .tabItem {
                     Label("Søk", systemImage: "magnifyingglass")
                 }
