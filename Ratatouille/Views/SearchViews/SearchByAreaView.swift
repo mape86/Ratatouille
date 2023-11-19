@@ -110,7 +110,6 @@ struct SearchByAreaView: View {
     }
 }
 
-
 #Preview {
     SearchByAreaView(
         searchTerm: { _ in print("Søket er utført")},
@@ -118,7 +117,6 @@ struct SearchByAreaView: View {
     )
     
 }
-
 //View {
 //    VStack {
 //        Text("Søk område")

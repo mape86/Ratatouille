@@ -22,8 +22,22 @@ class CoreDataManager {
         }
     }
     
+    static func previewInstance() -> CoreDataManager {
+        return CoreDataManager()
+    }
+    
     var viewContext: NSManagedObjectContext {
         persistenceContainer.viewContext
+    }
+    
+    func saveContext() {
+        if viewContext.hasChanges {
+            do {
+                try viewContext.save()
+            } catch {
+                fatalError("Feil ved lagring: \(error)")
+            }
+        }
     }
     
     func saveAreasToDB(areaNames: [String], completed: @escaping (Error?) -> Void) {

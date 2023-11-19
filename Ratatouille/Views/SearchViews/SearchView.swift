@@ -116,14 +116,14 @@ struct SearchView: View {
                 .presentationDetents([.large, .medium])
                 .presentationDragIndicator(.visible)
             }
-//            .sheet(isPresented: $searchByIngredientIsOpen){
-//                SearchByIngredientView(searchTerm: { results in
-//                    self.searchResultsIngredient = results
-//                    self.searchByIngredientIsOpen = false
-//                }, isPresented: $searchByIngredientIsOpen)
-//                .presentationDetents([.large, .medium])
-//                .presentationDragIndicator(.visible)
-//            }
+            .sheet(isPresented: $searchByIngredientIsOpen){
+                SearchByIngredientView(searchTerm: { results in
+                    self.searchResults = results
+                    self.searchByIngredientIsOpen = false
+                }, isPresented: $searchByIngredientIsOpen)
+                .presentationDetents([.large, .medium])
+                .presentationDragIndicator(.visible)
+            }
         }
     }
 

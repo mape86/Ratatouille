@@ -6,18 +6,22 @@
 //
 
 import SwiftUI
+import CoreData
 
+//MARK: Main view
 struct SearchByCategoryView: View {
     
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.managedObjectContext) private var viewContext
     
     var searchTerm: ([SharedSearchResult]) -> Void
+    
     @ObservedObject var networkManager = NetworkManager.shared
-    @State private var categoryList: [String] = []
+    
     @State private var chosenCategory: String = ""
+    @State private var categories: [CategoryEntity] = []
+    @State private var isLoading: Bool = false
     
     @Binding var isPresented: Bool
-    
     
     var body: some View {
         VStack {
@@ -25,25 +29,25 @@ struct SearchByCategoryView: View {
                 .font(.title.bold())
                 .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .padding()
-            CustomLoadButton(title: "Last inn kategorier") {
-                networkManager.fetchCategoryList{
-                    if let firstCategory = networkManager.categories.first {
-                        chosenCategory = firstCategory.strCategory
-                    }
-                }
-                
-            }
-            if !networkManager.categories.isEmpty {
-                Picker("Velg område å søke fra", selection: $chosenCategory) {
-                    ForEach(networkManager.categories, id: \.id) {category in
-                        Text(category.strCategory).tag(category.strCategory)
-                    }
-                }
-            }
-            //            .onAppear{
-            //                networkManager.fetchAreaList()
-            //            }
             
+            if isLoading {
+                ProgressView("Laster inn områder...")
+            } else {
+                Picker("Velg område å søke fra", selection: $chosenCategory) {
+                    ForEach(categories, id: \.self) {category in
+                        Text(category.categoryName ?? "").tag(category.categoryName ?? "")
+                    }
+                }
+            }
+            CustomLoadButton(title: "last inn områder fra API") {
+                loadCategoriesFromAPI()
+            }
+            CustomLoadButton(title: "Slett listen fra databasen") {
+                deleteCategoryListFromDB()
+            }
+        }
+        .onAppear{
+            fetchCategoriesFromDB()
         }
         
         Button("Søk") {
@@ -54,6 +58,56 @@ struct SearchByCategoryView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.gray.opacity(0.5)))
+    }
+    
+    //MARK: Functions
+    
+    private func loadCategoriesFromAPI() {
+        isLoading = true
+        networkManager.fetchCategoryList { categoryNames in
+            saveCategoriesToDB(categoryNames: categoryNames)
+        }
+    }
+    
+    private func saveCategoriesToDB(categoryNames: [String]) {
+        categoryNames.forEach { categoryName in
+            let newCategory = CategoryEntity(context: viewContext)
+            newCategory.categoryName = categoryName
+        }
+        do {
+            try viewContext.save()
+            fetchCategoriesFromDB()
+        } catch {
+            print("Feilet ved lagring til databasen. \(error)")
+        }
+        isLoading = false
+    }
+    
+    private func fetchCategoriesFromDB() {
+        let fetchRequest: NSFetchRequest<CategoryEntity> = CategoryEntity.fetchRequest()
+        
+        do {
+            categories = try viewContext.fetch(fetchRequest)
+            if let firstCategory = categories.first {
+                chosenCategory = firstCategory.categoryName ?? ""
+            }
+        } catch {
+            print("Feilet ved henting av kategorier fra DB. \(error)")
+        }
+    }
+    
+    private func deleteCategoryListFromDB() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CategoryEntity")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try viewContext.execute(deleteRequest)
+            try viewContext.save()
+            categories = []
+            chosenCategory = ""
+        } catch {
+            print("Feilet ved sletting av kategorier fra databasen. \(error)")
+        }
     }
 }
 

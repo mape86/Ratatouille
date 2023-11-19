@@ -17,10 +17,6 @@ final class NetworkManager: ObservableObject {
     @Published var categories: [MealCategoryList] = []
     @Published var ingredientsList: [MealIngredientList] = []
     
-    //Filtered
-//    @Published var filteredAreas: [FilteredArea] = []
-//    @Published var filteredCategories: [FilteredCategory] = []
-    
     //MARK: Area URLS
     //List of all areas
     private let areaListURL = "https://www.themealdb.com/api/json/v1/1/list.php?a=list"
@@ -43,7 +39,7 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Area Functions
     
-    func fetchAreaList(completion: @escaping ([String]) -> Void) {
+    func fetchAreaList(completed: @escaping ([String]) -> Void) {
         guard let url = URL(string: areaListURL) else {
             return
         }
@@ -51,7 +47,7 @@ final class NetworkManager: ObservableObject {
         URLSession.shared.dataTask(with: url) {  data, response, error in
             guard let data = data, error == nil else {
                 print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
-                completion([])
+                completed([])
                 return}
             
             do {
@@ -59,49 +55,17 @@ final class NetworkManager: ObservableObject {
                 let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
                 let areaNames = areaResponse.meals.map { $0.strArea}
                 DispatchQueue.main.async {
-//                    self?.areas = areaResponse.meals
-//
-//                    PersistenceController.shared.saveAreas(areas: areaResponse.meals.map {$0.strArea}) { error in
-//                        if let error = error {
-//                            print("Det skjedde en feil ved lagring av områder. Kunne ikke lagre! \(error.localizedDescription)")
-//                        }
-//                    }
-                    completion(areaNames)
+                    completed(areaNames)
                 }
             }catch {
                 print("Feilet ved dekoding \(error.localizedDescription)")
-                completion([])
+                completed([])
             }
         }.resume()
     }
-//    func fetchAreaList(completion: @escaping () -> Void) {
-//        guard let url = URL(string: areaListURL) else {
-//            return
-//        }
-//        
-//        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-//            guard let data = data, error == nil else {return}
-//            
-//            do {
-//                let decoder = JSONDecoder()
-//                let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
-//                DispatchQueue.main.async {
-//                    self?.areas = areaResponse.meals
-//                    
-//                    PersistenceController.shared.saveAreas(areas: areaResponse.meals.map {$0.strArea}) { error in
-//                        if let error = error {
-//                            print("Det skjedde en feil ved lagring av områder. Kunne ikke lagre! \(error.localizedDescription)")
-//                        }
-//                    }
-//                    completion()
-//                }
-//            }catch {
-//                print(error.localizedDescription)
-//            }
-//        }.resume()
-//    }
+
     
-    func fetchMealsByArea(area: String, completion: @escaping ([SharedSearchResult]) -> Void) {
+    func fetchMealsByArea(area: String, completed: @escaping ([SharedSearchResult]) -> Void) {
         let urlString = "\(filterByAreaURL)\(area)"
         guard let url = URL(string: urlString) else {
             print("Error: Ugyldig URL")
@@ -112,7 +76,7 @@ final class NetworkManager: ObservableObject {
             guard let data = data, error == nil else {
                 print("Forespørsel til nettverk feilet: \(error?.localizedDescription ?? "Ukjent feil") ")
                 DispatchQueue.main.async {
-                    completion([])
+                    completed([])
                 }
                 return
             }
@@ -124,12 +88,12 @@ final class NetworkManager: ObservableObject {
                     SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, description: nil, type: nil)
                 }
                 DispatchQueue.main.async {
-                    completion(searchResult)
+                    completed(searchResult)
                 }
             }catch {
                 print(error.localizedDescription)
                 DispatchQueue.main.async {
-                    completion([])
+                    completed([])
                 }
             }
         }.resume()
@@ -137,30 +101,32 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Category Functions
     
-    func fetchCategoryList(completion: @escaping () -> Void) {
+    func fetchCategoryList(completed: @escaping ([String]) -> Void) {
         guard let url = URL(string: categoryListURL) else {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
+                print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
+                completed([])
                 return
             }
             
             do {
                 let decoder = JSONDecoder()
                 let categoryResponse = try decoder.decode(MealCategoryListResponse.self, from: data)
+                let categoryNames = categoryResponse.meals.map {$0.strCategory}
                 DispatchQueue.main.async {
-                    self?.categories = categoryResponse.meals
-                    completion()
+                    completed(categoryNames)
                 }
             }catch {
-                print(error.localizedDescription)
+                print("Feilet ved dekoding. \(error.localizedDescription)")
             }
         }.resume()
     }
     
-    func fetchMealsByCategory(category: String, completion: @escaping ([SharedSearchResult]) -> Void) {
+    func fetchMealsByCategory(category: String, completed: @escaping ([SharedSearchResult]) -> Void) {
         let urlString = "\(categoryFilterURL)\(category)"
         guard let url = URL(string: urlString) else {
             print("Error: Ugyldig URL")
@@ -171,7 +137,7 @@ final class NetworkManager: ObservableObject {
             guard let data = data, error == nil else {
                 print("Forespørsel til nettverk feilet: \(error?.localizedDescription ?? "Ukjent feil") ")
                 DispatchQueue.main.async {
-                    completion([])
+                    completed([])
                 }
                 return
             }
@@ -183,12 +149,12 @@ final class NetworkManager: ObservableObject {
                     SharedSearchResult(id: category.idMeal, name: category.strMeal, thumb: category.strMealThumb, description: nil, type: nil)
                 }
                 DispatchQueue.main.async {
-                    completion(searchResult)
+                    completed(searchResult)
                 }
             }catch {
                 print(error.localizedDescription)
                 DispatchQueue.main.async {
-                    completion([])
+                    completed([])
                 }
             }
         }.resume()
@@ -196,23 +162,61 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Ingredient Functions
     
-    func fetchIngredientList(completion: @escaping () -> Void) {
+    func fetchIngredientList(completed: @escaping ([String]) -> Void) {
         guard let url = URL(string: ingredientListURL) else {
             return
         }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let data = data, error == nil else {return}
+            guard let data = data, error == nil else {
+                print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
+                completed([])
+                return
+            }
             
             do {
                 let decoder = JSONDecoder()
                 let ingredientResponse = try decoder.decode(MealIngredientListResponse.self, from: data)
+                let ingredientNames = ingredientResponse.meals.map { $0.strIngredient}
                 DispatchQueue.main.async {
-                    self?.ingredientsList = ingredientResponse.meals
-                    completion()
+                    completed(ingredientNames)
+                }
+            }catch {
+                print("Feilet ved dekoding. \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+    
+    func fetchMealsByIngredient(ingredient: String, completed: @escaping ([SharedSearchResult]) -> Void) {
+        let urlString = "\(filterByIngredientURL)\(ingredient)"
+        guard let url = URL(string: urlString) else {
+            print("Error: Ugyldig URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Forespørsel til nettverk feilet: \(error?.localizedDescription ?? "Ukjent feil") ")
+                DispatchQueue.main.async {
+                    completed([])
+                }
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let filteredIngredientResponse = try decoder.decode(MealIngredientResponse.self, from: data)
+                let searchResult = filteredIngredientResponse.meals.map { ingredient in
+                    SharedSearchResult(id: ingredient.idIngredient, name: ingredient.strIngredient, thumb: nil, description: ingredient.strDescription, type: nil)
+                }
+                DispatchQueue.main.async {
+                    completed(searchResult)
                 }
             }catch {
                 print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    completed([])
+                }
             }
         }.resume()
     }
