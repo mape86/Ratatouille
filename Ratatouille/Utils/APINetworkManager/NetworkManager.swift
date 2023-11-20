@@ -35,7 +35,48 @@ final class NetworkManager: ObservableObject {
     private let filterByIngredientURL = "https://www.themealdb.com/api/json/v1/1/filter.php?i="
     private let ingredientImageURL = "https://www.themealdb.com/images/ingredients/"
     
+    //MARK: Detail URLS
+    private let mealDetailURL = "https://www.themealdb.com/api/json/v1/1/lookup.php?i="
+    
+    
     private init () {}
+    
+    //MARK: Flag conversion function
+    var areaToCountryCode: [String: String] = [ : ]
+    
+    func areaNameToCountryCode(_ areaName: String) -> String? {
+        
+        let areaMapping = [
+            "American": "US",
+            "British": "GB",
+            "Canadian": "CA",
+            "Chinese": "CN",
+            "Dutch": "NL",
+            "Egyptian": "EG",
+            "French": "FR",
+            "Greek": "GR",
+            "Indian": "IN",
+            "Irish": "IE",
+            "Italian": "IT",
+            "Jamaican": "JM",
+            "Japanese": "JP",
+            "Kenyan": "KE",
+            "Malaysian": "MY",
+            "Mexican": "MX",
+            "Moroccan": "MA",
+            "Polish": "PL",
+            "Portuguese": "PT",
+            "Russian": "RU",
+            "Spanish": "ES",
+            "Thai": "TH",
+            "Tunisian": "TN",
+            "Turkish": "TR",
+            "Unknown": "US",
+            "Vietnamese": "VN"
+        ]
+        
+        return areaMapping[areaName]
+    }
     
     //MARK: Area Functions
     
@@ -54,6 +95,11 @@ final class NetworkManager: ObservableObject {
                 let decoder = JSONDecoder()
                 let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
                 let areaNames = areaResponse.meals.map { $0.strArea}
+                
+                areaResponse.meals.forEach { meal in
+                    self.areaToCountryCode[meal.strArea] = self.areaNameToCountryCode(meal.strArea)
+                   }
+                
                 DispatchQueue.main.async {
                     completed(areaNames)
                 }
@@ -85,7 +131,11 @@ final class NetworkManager: ObservableObject {
                 let decoder = JSONDecoder()
                 let filteredAreaResponse = try decoder.decode(MealAreaResponse.self, from: data)
                 let searchResult = filteredAreaResponse.meals.map { area in
-                    SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, description: nil, type: nil)
+                    
+                    let countryCode = self.areaNameToCountryCode(area.strMeal) ?? "Ukjent"
+                    let flagThumbURL = "https://flagsapi.com/\(countryCode)/flat/24.png"
+                    
+                   return SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, flagThumb: flagThumbURL, description: nil, type: nil)
                 }
                 DispatchQueue.main.async {
                     completed(searchResult)
@@ -146,7 +196,7 @@ final class NetworkManager: ObservableObject {
                 let decoder = JSONDecoder()
                 let filteredCategoryResponse = try decoder.decode(FilteredCategoryResponse.self, from: data)
                 let searchResult = filteredCategoryResponse.meals.map { category in
-                    SharedSearchResult(id: category.idMeal, name: category.strMeal, thumb: category.strMealThumb, description: nil, type: nil)
+                    SharedSearchResult(id: category.idMeal, name: category.strMeal, thumb: category.strMealThumb,description: nil, type: nil)
                 }
                 DispatchQueue.main.async {
                     completed(searchResult)
@@ -205,9 +255,9 @@ final class NetworkManager: ObservableObject {
             
             do {
                 let decoder = JSONDecoder()
-                let filteredIngredientResponse = try decoder.decode(MealIngredientResponse.self, from: data)
+                let filteredIngredientResponse = try decoder.decode(FilteredIngredientResponse.self, from: data)
                 let searchResult = filteredIngredientResponse.meals.map { ingredient in
-                    SharedSearchResult(id: ingredient.idIngredient, name: ingredient.strIngredient, thumb: nil, description: ingredient.strDescription, type: nil)
+                    SharedSearchResult(id: ingredient.idMeal, name: ingredient.strMeal, thumb: ingredient.strMealThumb, description: nil, type: nil)
                 }
                 DispatchQueue.main.async {
                     completed(searchResult)
@@ -219,6 +269,12 @@ final class NetworkManager: ObservableObject {
                 }
             }
         }.resume()
+    }
+    
+    //MARK: Meal detail functions
+    
+    func fetchMealDetailsByID() {
+        
     }
 }
 

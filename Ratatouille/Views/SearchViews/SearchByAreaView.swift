@@ -13,8 +13,10 @@ import CoreData
 struct SearchByAreaView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
+//    @StateObject var coreDataManager = CoreDataManager
     
     var searchTerm: ([SharedSearchResult]) -> Void
+//    var flagUrl: ([SharedSearchResult]) -> Void
     @ObservedObject var networkManager = NetworkManager.shared
     @State private var chosenArea: String = ""
     @State private var areas: [AreaEntity] = []

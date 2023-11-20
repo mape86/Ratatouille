@@ -1,18 +1,18 @@
 //
-//  SettingsView.swift
+//  EditIngredientView.swift
 //  Ratatouille
 //
-//  Created by Marius Pettersen on 14/11/2023.
+//  Created by Marius Pettersen on 20/11/2023.
 //
 
 import SwiftUI
 
-struct SettingsView: View {
+struct EditIngredientView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    SettingsView()
+    EditIngredientView()
 }

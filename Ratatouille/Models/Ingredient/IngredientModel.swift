@@ -23,9 +23,24 @@ struct MealIngredient: Decodable, Hashable, Identifiable {
     var id: String {idIngredient}
 }
 
+struct filteredIngredient: Decodable, Hashable, Identifiable {
+    
+    let strMeal: String
+    let strMealThumb: String
+    let idMeal: String
+    
+    var id: String {idMeal}
+}
+
 struct MealIngredientResponse: Decodable {
     
     let meals: [MealIngredient]
+    
+}
+
+struct FilteredIngredientResponse: Decodable {
+    
+    let meals: [filteredIngredient]
     
 }
 

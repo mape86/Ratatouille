@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23B81" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AreaEntity" representedClassName="AreaEntity" syncable="YES" codeGenerationType="class">
         <attribute name="areaName" optional="YES" attributeType="String"/>
+        <attribute name="countryCode" optional="YES" attributeType="String"/>
         <attribute name="flagImage" optional="YES" attributeType="String"/>
         <attribute name="isSaved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="meals" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MealEntity" inverseName="area" inverseEntity="MealEntity"/>

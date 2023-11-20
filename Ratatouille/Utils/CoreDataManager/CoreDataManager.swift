@@ -7,13 +7,19 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
-class CoreDataManager {
+class CoreDataManager: ObservableObject {
+    
+//    let container = NSPersistentContainer
+    
+    @State var chosenArea: String = ""
+    @State var areas: [AreaEntity] = []
     
     static let shared = CoreDataManager()
     let persistenceContainer: NSPersistentContainer
     
-    private init() {
+    init() {
         persistenceContainer = NSPersistentContainer(name: "Ratatouille")
         persistenceContainer.loadPersistentStores { _, error in
             if let error = error {
@@ -40,42 +46,46 @@ class CoreDataManager {
         }
     }
     
-    func saveAreasToDB(areaNames: [String], completed: @escaping (Error?) -> Void) {
+    func saveAreasToDB(areaNames: [String]) {
         areaNames.forEach { areaName in
-            let area = AreaEntity(context: viewContext)
-            area.areaName = areaName
+            let newArea = AreaEntity(context: viewContext)
+            newArea.areaName = areaName
         }
-        
-        do{
-            try viewContext.save()
-            completed(nil)
-        } catch {
-            completed(error)
-        }
-    }
-    
-    func fetchAreasFromDB(completed: @escaping (Result<[AreaEntity], Error>) -> Void) {
-        let fetchRequest: NSFetchRequest<AreaEntity> = AreaEntity.fetchRequest()
         do {
-            let areas = try viewContext.fetch(fetchRequest)
-            completed(.success(areas))
+            try viewContext.save()
+            fetchAreasFromDB()
         } catch {
-            completed(.failure(error))
+            print("Feilet ved lagring til databasen. \(error)")
+        }
+//        isLoading = false
+    }
+    
+    func fetchAreasFromDB() {
+        let fetchRequest: NSFetchRequest<AreaEntity> = AreaEntity.fetchRequest()
+        
+        do {
+            areas = try viewContext.fetch(fetchRequest)
+            if let firstArea = areas.first {
+                chosenArea = firstArea.areaName ?? ""
+            }
+        }catch {
+            print("Feilet ved henting av områder fra DB. \(error)")
         }
     }
     
-    func deleteAllAreasFromDB(completed: @escaping (Error?) -> Void) {
-        
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = AreaEntity.fetchRequest()
+    func deleteAreaListFromDB() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "AreaEntity")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
         do {
             try viewContext.execute(deleteRequest)
             try viewContext.save()
-            completed(nil)
+            areas = []
+            chosenArea = ""
         } catch {
-            completed(error)
+            print("Feilet ved sletting av områder fra databasen. \(error)")
         }
     }
+
     
 }
