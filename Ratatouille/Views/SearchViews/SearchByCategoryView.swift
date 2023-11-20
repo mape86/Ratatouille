@@ -39,7 +39,7 @@ struct SearchByCategoryView: View {
                     }
                 }
             }
-            CustomLoadButton(title: "last inn områder fra API") {
+            CustomLoadButton(title: "last inn kategorier fra API") {
                 loadCategoriesFromAPI()
             }
             CustomLoadButton(title: "Slett listen fra databasen") {

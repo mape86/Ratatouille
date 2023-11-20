@@ -131,11 +131,8 @@ final class NetworkManager: ObservableObject {
                 let decoder = JSONDecoder()
                 let filteredAreaResponse = try decoder.decode(MealAreaResponse.self, from: data)
                 let searchResult = filteredAreaResponse.meals.map { area in
-                    
-                    let countryCode = self.areaNameToCountryCode(area.strMeal) ?? "Ukjent"
-                    let flagThumbURL = "https://flagsapi.com/\(countryCode)/flat/24.png"
-                    
-                   return SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, flagThumb: flagThumbURL, description: nil, type: nil)
+
+                   return SharedSearchResult(id: area.idMeal, name: area.strMeal, thumb: area.strMealThumb, description: nil, type: nil)
                 }
                 DispatchQueue.main.async {
                     completed(searchResult)
@@ -273,8 +270,46 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Meal detail functions
     
-    func fetchMealDetailsByID() {
+    func fetchMealDetailsByID(mealId: String, completed: @escaping (Result <Meal, Error>) -> Void) {
+        let detailURL = mealDetailURL + mealId
+        guard let url = URL(string: detailURL) else {
+            completed(.failure(NMError.invalidURL))
+            return
+        }
         
+        URLSession.shared.dataTask(with: url) {data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completed(.failure(error))
+                }
+                
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completed(.failure(NMError.invalidData))
+                }
+                
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let mealResponse = try decoder.decode(MealResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if let meal = mealResponse.meals.first {
+                        completed(.success(meal))
+                    } else {
+                        completed(.failure(NMError.invalidResponse))
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completed(.failure(error))
+                }
+            }
+        }.resume()
     }
 }
 
