@@ -20,7 +20,7 @@ struct SearchByCategoryView: View {
     @State private var chosenCategory: String = ""
     @State private var categories: [CategoryEntity] = []
     @State private var isLoading: Bool = false
-    
+    @State private var isShowingAlert = false
     @Binding var isPresented: Bool
     
     var body: some View {
@@ -39,18 +39,40 @@ struct SearchByCategoryView: View {
                     }
                 }
             }
-            CustomLoadButton(title: "last inn kategorier fra API") {
-                loadCategoriesFromAPI()
-            }
-            CustomLoadButton(title: "Slett listen fra databasen") {
-                deleteCategoryListFromDB()
+            HStack {
+                Spacer()
+                VStack {
+                    CustomLoadButton(title: "last inn") {
+                        loadCategoriesFromAPI()
+                    }
+                    Text("Last inn fra API")
+                        .font(.callout)
+                }
+                Spacer()
+                VStack{
+                    CustomLoadButton(title: "Slett") {
+                        self.isShowingAlert = true
+                    }
+                    .alert(isPresented: $isShowingAlert) {
+                        Alert(
+                            title: Text("Advarsel"),
+                            message: Text("Du er i ferd med å slette hele listen fra databasen. Vil du fortsette?"),
+                            primaryButton: .destructive(Text("Slett")) {
+                                deleteCategoryListFromDB()
+                            },
+                            secondaryButton: .cancel(Text("Avbryt"))
+                        )
+                    }
+                    Text("Slett fra database")
+                }
+                Spacer()
             }
         }
         .onAppear{
             fetchCategoriesFromDB()
         }
         
-        Button("Søk") {
+        CustomLoadButton(title: "Søk") {
             networkManager.fetchMealsByCategory(category: chosenCategory) { categoryName in
                 searchTerm(categoryName)
                 isPresented = false

@@ -20,6 +20,7 @@
 		4939D35F2B04DB60003D9B95 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4939D35E2B04DB60003D9B95 /* CategoryModel.swift */; };
 		4939D3612B04DB6B003D9B95 /* AreaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4939D3602B04DB6B003D9B95 /* AreaModel.swift */; };
 		4939D3632B04EA3A003D9B95 /* MealModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4939D3622B04EA3A003D9B95 /* MealModel.swift */; };
+		4957C5072B0C0C4000BEB7C7 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4957C5062B0C0C4000BEB7C7 /* ColorExtension.swift */; };
 		495CB0A02B02B949009C0FAB /* RatatouilleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CB09F2B02B949009C0FAB /* RatatouilleApp.swift */; };
 		495CB0A22B02B949009C0FAB /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CB0A12B02B949009C0FAB /* SearchView.swift */; };
 		495CB0A42B02B94A009C0FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 495CB0A32B02B94A009C0FAB /* Assets.xcassets */; };
@@ -69,6 +70,7 @@
 		4939D35E2B04DB60003D9B95 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		4939D3602B04DB6B003D9B95 /* AreaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaModel.swift; sourceTree = "<group>"; };
 		4939D3622B04EA3A003D9B95 /* MealModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealModel.swift; sourceTree = "<group>"; };
+		4957C5062B0C0C4000BEB7C7 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		495CB09C2B02B949009C0FAB /* Ratatouille.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ratatouille.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CB09F2B02B949009C0FAB /* RatatouilleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatatouilleApp.swift; sourceTree = "<group>"; };
 		495CB0A12B02B949009C0FAB /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -125,7 +127,6 @@
 		49184C132B06BA41005100CE /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				49184C142B06BA65005100CE /* CustomLoadButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -322,8 +323,10 @@
 		498320F72B052717002B8502 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				49184C142B06BA65005100CE /* CustomLoadButton.swift */,
 				4962A2442B06212700935707 /* CoreDataManager */,
 				498320F82B05271D002B8502 /* APINetworkManager */,
+				4957C5062B0C0C4000BEB7C7 /* ColorExtension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				492261ED2B04117000714F6B /* MyRecipesView.swift in Sources */,
 				492C90E02B0B963E00FBA4D6 /* ArchiveView.swift in Sources */,
 				4962A2462B06215600935707 /* CoreDataManager.swift in Sources */,
+				4957C5072B0C0C4000BEB7C7 /* ColorExtension.swift in Sources */,
 				49184C152B06BA65005100CE /* CustomLoadButton.swift in Sources */,
 				498320FA2B05272F002B8502 /* NetworkManager.swift in Sources */,
 				4939D3612B04DB6B003D9B95 /* AreaModel.swift in Sources */,

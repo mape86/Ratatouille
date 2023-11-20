@@ -19,14 +19,14 @@ struct CustomLoadButton: View {
                 .padding()
                 .foregroundColor(.white)
                 .font(.headline.bold())
-                .background(LinearGradient(colors: [.blue, .purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .background(LinearGradient(colors: [.customPurpleMedium, .customPurpleDark], startPoint: .top, endPoint: .bottom))
                 .cornerRadius(15)
         }
     }
 }
 
 #Preview {
-    CustomLoadButton(title: "") {
+    CustomLoadButton(title: "Last inn") {
         print("Button tapped")
     }
 }

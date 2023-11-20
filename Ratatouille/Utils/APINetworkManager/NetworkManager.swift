@@ -214,7 +214,7 @@ final class NetworkManager: ObservableObject {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
                 completed([])
