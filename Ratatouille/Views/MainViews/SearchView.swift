@@ -10,13 +10,16 @@ import CoreData
 
 struct SearchView: View {
     
+    @Environment(\.managedObjectContext) private var viewContext
+    @ObservedObject private var networkManager = NetworkManager.shared
+    
     @State private var searchByAreaIsOpen = false
     @State private var searchByCategoryIsOpen = false
     @State private var searchByIngredientIsOpen = false
     @State private var searchByTextIsOpen = false
     
     @State private var searchResults: [SharedSearchResult] = []
-
+    
     var body: some View {
         NavigationView {
             List($searchResults) { result in
@@ -39,6 +42,13 @@ struct SearchView: View {
                         }
                         Text(result.name.wrappedValue)
                     }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button {
+                            saveMealRecipeToDB(mealId: result.id)
+                        } label: {
+                            Label("Add", systemImage: "archivebox")
+                        }
+                    }
                 }
             }
             .toolbar {
@@ -55,7 +65,7 @@ struct SearchView: View {
                     .background(Color.accentColor)
                     .cornerRadius(10)
                     Spacer()
-
+                    
                     Button(action: {
                         searchByCategoryIsOpen.toggle()
                     }) {
@@ -67,7 +77,7 @@ struct SearchView: View {
                     .background(Color.accentColor)
                     .cornerRadius(10)
                     Spacer()
-
+                    
                     Button(action: {
                         searchByIngredientIsOpen.toggle()
                     }) {
@@ -79,7 +89,7 @@ struct SearchView: View {
                     .background(Color.accentColor)
                     .cornerRadius(10)
                     Spacer()
-
+                    
                     Button(action: {
                         searchByTextIsOpen.toggle()
                     }) {
@@ -121,6 +131,34 @@ struct SearchView: View {
             }
         }
     }
+    
+    func saveMealRecipeToDB(mealId: String) {
+        networkManager.fetchMealDetailsByID(mealId: mealId) { result in
+            switch result {
+            case .success(let fetchedMeal):
+                DispatchQueue.main.async {
+                    
+                    let newMeal = MealEntity(context: viewContext)
+                    newMeal.id = UUID()
+                    newMeal.mealArea = fetchedMeal.strArea
+                    newMeal.mealCategory = fetchedMeal.strCategory
+                    newMeal.mealImage = fetchedMeal.strMealThumb
+                    newMeal.mealName = fetchedMeal.strMeal
+                    newMeal.mealInstructions = fetchedMeal.strInstructions
+                    newMeal.mealYoutube = fetchedMeal.strYoutube
+                    
+                    do {
+                        try viewContext.save()
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
 }
 
 private let itemFormatter: DateFormatter = {
