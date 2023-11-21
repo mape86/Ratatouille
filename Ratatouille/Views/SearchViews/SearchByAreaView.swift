@@ -13,10 +13,9 @@ import CoreData
 struct SearchByAreaView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
-//    @StateObject var coreDataManager = CoreDataManager
     
     var searchTerm: ([SharedSearchResult]) -> Void
-//    var flagUrl: ([SharedSearchResult]) -> Void
+
     @ObservedObject var networkManager = NetworkManager.shared
     @State private var chosenArea: String = ""
     @State private var areas: [AreaEntity] = []
@@ -142,90 +141,3 @@ struct SearchByAreaView: View {
     )
     
 }
-//View {
-//    VStack {
-//        Text("Søk område")
-//            .font(.title.bold())
-//            .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
-//            .padding()
-//        CustomLoadButton(title: "Last inn områder") {
-//                      networkManager.fetchAreaList{
-//                          if let firstArea = networkManager.areas.first {
-//                              chosenArea = firstArea.strArea
-//                          }
-//                      }
-//
-//        }
-//        if !networkManager.areas.isEmpty {
-//            Picker("Velg område å søke fra", selection: $chosenArea) {
-//                ForEach(networkManager.areas, id: \.id) {area in
-//                    Text(area.strArea).tag(area.strArea)
-//                }
-//            }
-//        }
-//
-//    }
-//    .onAppear{
-//        networkManager.fetchAreaList{
-//            if let firstArea = networkManager.areas.first {
-//                chosenArea = firstArea.strArea
-//            }
-//        }
-//    }
-//
-//    Button("Søk") {
-//        networkManager.fetchMealsByArea(area: chosenArea) { mealName in
-//            searchTerm(mealName)
-//            isPresented = false
-//        }
-//    }
-//    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//    .background(Color(.gray.opacity(0.5)))
-//}
-
-
-// ALTERNATE FUNCTIONS
-
-//    private func loadAreasFromDB() {
-//        CoreDataManager.shared.fetchAreasFromDB { result in
-//            switch result {
-//            case .success(let areas):
-//                self.areas = areas
-//                if let firstArea = areas.first {
-//                    chosenArea = firstArea.areaName ?? ""
-//                }
-//            case .failure(let error):
-//                print("Feilet ved henting av områder fra DB. \(error)")
-//            }
-//
-//        }
-//        //        if areas.isEmpty {
-//        //            networkManager.fetchAreaList {
-//        //                for area in networkManager.areas {
-//        //                    let newArea = AreaEntity(context: managedObjectContext)
-//        //                    newArea.areaName = area.strArea
-//        //
-//        //                    do {
-//        //                        try managedObjectContext.save()
-//        //                    } catch {
-//        //                        print("Feilet ved lagring til context. \(error)")
-//        //                    }
-//        //                }
-//        //                chosenArea = networkManager.areas.first?.strArea ?? ""
-//        //            }
-//        //        } else {
-//        //            chosenArea = areas.first?.areaName ?? ""
-//        //        }
-//    }
-
-
-// Alternate button, for loading directly from API.
-
-//            CustomLoadButton(title: "Last inn områder") {
-//                networkManager.fetchAreaList{_ in
-//                              if let firstArea = networkManager.areas.first {
-//                                  chosenArea = firstArea.strArea
-//                              }
-//                          }
-//
-//            }
