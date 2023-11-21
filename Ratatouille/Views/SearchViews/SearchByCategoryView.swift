@@ -33,7 +33,7 @@ struct SearchByCategoryView: View {
             if isLoading {
                 ProgressView("Laster inn områder...")
             } else {
-                Picker("Velg område å søke fra", selection: $chosenCategory) {
+                Picker("Velg kategori", selection: $chosenCategory) {
                     ForEach(categories, id: \.self) {category in
                         Text(category.categoryName ?? "").tag(category.categoryName ?? "")
                     }

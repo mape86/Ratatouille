@@ -17,42 +17,73 @@ struct RecipeDetailView: View {
     
     var body: some View {
         Group {
-            if isLoading {
-                ProgressView("Laster inn...")
-            } else if let recipe = recipe {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        if let url = URL(string: recipe.strMealThumb) {
-                            AsyncImage(url: url) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                                    .cornerRadius(10)
-                            } placeholder: {
-                                ProgressView()
+            ZStack{
+                RadialGradient(stops: [
+                    .init(color: Color(red: 0.1, green: 0.2, blue: 0.45) ,location: 0.3),
+                    .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3)
+                ], center: .top, startRadius: 200, endRadius: 700)
+
+                if isLoading {
+                    ProgressView("Laster inn...")
+                } else if let recipe = recipe {
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            if let url = URL(string: recipe.strMealThumb) {
+                                AsyncImage(url: url) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                        .cornerRadius(10)
+                                } placeholder: {
+                                    ProgressView()
+                                }
                             }
+                            
+                            Text(recipe.strMeal)
+                                .font(.title.bold())
+                                .padding(.top, 10)
+                                                        
+                            HStack{
+                                Text("Kategori:")
+                                    .bold()
+                                Text(recipe.strCategory)
+                            }
+                            .font(.title3)
+                            .padding(.top, 10)
+                            
+                            HStack{
+                                Text("Område:")
+                                    .bold()
+                                Text(recipe.strArea)
+                            }
+                            .font(.title3)
+                            .padding(.top, 10)
+                            
+                            HStack {
+                                Text("Slik gjør du:")
+                                    .font(.title3.bold())
+                                    .padding(.top, 10)
+                                Spacer()
+                                if let youtube = recipe.strYoutube {
+                                    VStack{
+                                        Image("youtubeLogo")
+                                            .resizable()
+                                            .frame(width: 50, height: 50)
+                                        Link("Se på YouTube", destination: URL(string: youtube) ?? URL(string: "https://www.youtube.com")!)
+                                    }
+                                }
+
+                            }
+                            Text(recipe.strInstructions)
+                                .padding(.top, 10)
                         }
-                        Text(recipe.strMeal)
-                            .font(.title)
-                            .bold()
-                            .padding(.top, 10)
-                        Text("Kategori: \(recipe.strCategory)")
-                            .font(.title3)
-                            .padding(.top, 10)
-                        Text("Område: \(recipe.strArea)")
-                            .font(.title3)
-                            .padding(.top, 10)
-                        Text("Slik gjør du:")
-                            .font(.title3)
-                            .padding(.top, 10)
-                        Text(recipe.strInstructions)
-                            .padding(.top, 10)
+                        .padding()
+                        .background(.regularMaterial)
                     }
-                    .padding()
+                } else if let errorMsg = errorMsg {
+                    Text(errorMsg)
+                } else {
+                    ProgressView()
                 }
-            } else if let errorMsg = errorMsg {
-                Text(errorMsg)
-            } else {
-                ProgressView()
             }
             
         }
@@ -64,8 +95,8 @@ struct RecipeDetailView: View {
     
 
     private func fetchRecipeDetail() {
+        
         isLoading = true
-        print("Id = \(id)")
         
           networkManager.fetchMealDetailsByID(mealId: id) { result in
               DispatchQueue.main.async {

@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct SearchByTextView: View {
+    
+    @ObservedObject var networkManager = NetworkManager.shared
+    
+    @Binding var searchResults: [SharedSearchResult]
+    @Binding var isPresented: Bool
+    @State private var searchText: String = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TextField("Søk etter måltid (Navn)", text: $searchText)
+            .padding()
+            .border(Color.accentColor, width: 1)
+        
+        CustomLoadButton(title: "Søk") {
+            networkManager.fetchMealByName(searchWord: searchText) { result in
+                self.searchResults = result
+                isPresented = false
+            }
+        }
     }
 }
 
 #Preview {
-    SearchByTextView()
+    SearchByTextView(searchResults: .constant([SharedSearchResult]()), isPresented: .constant(false))
 }

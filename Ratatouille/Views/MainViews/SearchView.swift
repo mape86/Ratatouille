@@ -116,6 +116,9 @@ struct SearchView: View {
                 .presentationDetents([.large, .medium])
                 .presentationDragIndicator(.visible)
             }
+            .sheet(isPresented: $searchByTextIsOpen){
+                SearchByTextView(searchResults: $searchResults, isPresented: $searchByTextIsOpen)
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ struct SearchByAreaView: View {
     @State private var chosenArea: String = ""
     @State private var areas: [AreaEntity] = []
     @State var isLoading: Bool = false
+    @State private var isShowingAlert = false
     
     @Binding var isPresented: Bool
     
@@ -28,30 +29,52 @@ struct SearchByAreaView: View {
         VStack {
             Text("Søk område")
                 .font(.title.bold())
-                .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .foregroundStyle(LinearGradient(colors: [.customPurpleDark, .customPurpleMedium], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .padding()
     
             if isLoading {
                 ProgressView("Laster inn områder...")
             } else {
-                Picker("Velg område å søke fra", selection: $chosenArea) {
+                Picker("Velg område", selection: $chosenArea) {
                     ForEach(areas, id: \.self) {area in
                         Text(area.areaName ?? "").tag(area.areaName ?? "")
                     }
                 }
             }
-            CustomLoadButton(title: "last inn områder fra API") {
-                loadAreasFromAPI()
-            }
-            CustomLoadButton(title: "Slett listen fra databasen") {
-                deleteAreaListFromDB()
+            HStack {
+                Spacer()
+                VStack {
+                    CustomLoadButton(title: "last inn") {
+                        loadAreasFromAPI()
+                    }
+                    Text("Last inn fra API")
+                        .font(.callout)
+                }
+                Spacer()
+                VStack{
+                    CustomLoadButton(title: "Slett") {
+                        self.isShowingAlert = true
+                    }
+                    .alert(isPresented: $isShowingAlert) {
+                        Alert(
+                            title: Text("Advarsel"),
+                            message: Text("Du er i ferd med å slette hele listen fra databasen. Vil du fortsette?"),
+                            primaryButton: .destructive(Text("Slett")) {
+                                deleteAreaListFromDB()
+                            },
+                            secondaryButton: .cancel(Text("Avbryt"))
+                        )
+                    }
+                    Text("Slett fra database")
+                }
+                Spacer()
             }
         }
         .onAppear{
             fetchAreasFromDB()
         }
         
-        Button("Søk") {
+        CustomLoadButton(title: "Søk") {
             networkManager.fetchMealsByArea(area: chosenArea) { mealName in
                 searchTerm(mealName)
                 isPresented = false

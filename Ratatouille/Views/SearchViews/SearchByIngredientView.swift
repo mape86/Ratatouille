@@ -19,6 +19,7 @@ struct SearchByIngredientView: View {
     @State private var ingredients: [IngredientEntity] = []
     @State private var chosenIngredient: String = ""
     @State private var isLoading: Bool = false
+    @State private var isShowingAlert = false
     
     @Binding var isPresented: Bool
     
@@ -33,24 +34,46 @@ struct SearchByIngredientView: View {
             if isLoading {
                 ProgressView("Laster inn områder...")
             } else {
-                Picker("Velg område å søke fra", selection: $chosenIngredient) {
+                Picker("Velg ingrediens", selection: $chosenIngredient) {
                     ForEach(ingredients, id: \.self) {ingredient in
                         Text(ingredient.ingredientName ?? "").tag(ingredient.ingredientName ?? "")
                     }
                 }
             }
-            CustomLoadButton(title: "last inn områder fra API") {
-                loadIngredientsFromAPI()
-            }
-            CustomLoadButton(title: "Slett listen fra databasen") {
-                deleteIngredientListFromDB()
+            HStack {
+                Spacer()
+                VStack {
+                    CustomLoadButton(title: "last inn") {
+                        loadIngredientsFromAPI()
+                    }
+                    Text("Last inn fra API")
+                        .font(.callout)
+                }
+                Spacer()
+                VStack{
+                    CustomLoadButton(title: "Slett") {
+                        self.isShowingAlert = true
+                    }
+                    .alert(isPresented: $isShowingAlert) {
+                        Alert(
+                            title: Text("Advarsel"),
+                            message: Text("Du er i ferd med å slette hele listen fra databasen. Vil du fortsette?"),
+                            primaryButton: .destructive(Text("Slett")) {
+                                deleteIngredientListFromDB()
+                            },
+                            secondaryButton: .cancel(Text("Avbryt"))
+                        )
+                    }
+                    Text("Slett fra database")
+                }
+                Spacer()
             }
         }
         .onAppear{
             fetchIngredientsFromDB()
         }
         
-        Button("Søk") {
+        CustomLoadButton(title: "Søk") {
             networkManager.fetchMealsByIngredient(ingredient: chosenIngredient) { ingredientName in
                 searchTerm(ingredientName)
                 isPresented = false
