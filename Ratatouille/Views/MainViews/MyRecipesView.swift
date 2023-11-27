@@ -17,7 +17,7 @@ struct MyRecipesView: View {
     ) var meals: FetchedResults<MealEntity>
     
     @State private var showUserAlert = false
-    @State private var itemToDelete: MealEntity?
+    @State private var itemToArchive: MealEntity?
     
     var body: some View {
         NavigationView {
@@ -71,35 +71,37 @@ struct MyRecipesView: View {
                                     Text(meal.mealName ?? "Ukjent måltid")
                                     Text(meal.isSaved ? "true" : "false")
                                 }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                     Button(role: .destructive) {
-                                        itemToDelete = meal
+                                        itemToArchive = meal
                                         showUserAlert = true
                                     } label: {
-                                        Label("Slett", systemImage: "trash")
+                                        Label("Arkiver", systemImage: "archivebox")
                                     }
                                 }
                             }
                         }
                     }
-                    .alert("Du er i ferd med å slette retten fra mine oppskriver, vil du fortsette?",
-                           isPresented: $showUserAlert) {
-                        Button("Nei, avbryt!", role: .cancel) { itemToDelete = nil }
-                        Button("Ja, slett!", role: .destructive) {
-                            if let itemToDelete = itemToDelete {
-                                viewContext.delete(itemToDelete)
-                                try? viewContext.save()
-                            }
-                            itemToDelete = nil
-                        }
-                    } message: {
-                        Text("Oppskriften er slettet!")
-                    }
-                }
+                    .alert(isPresented: $showUserAlert) {
+                        Alert(
+                        title: Text("Arkivere Oppskriften"),
+                        message: Text("Er du sikke på at du vil sende denne oppskriften til arkivet?"),
+                        primaryButton: .default(Text("Avbryt")),
+                        secondaryButton: .destructive(Text("Arkiver"), action: sendToArchive)
+                        )
+                    }                }
             }
         }
         .navigationTitle("Mine oppskrifter")
     }
+    
+    private func sendToArchive() {
+        if let mealItemToArchive = itemToArchive {
+            mealItemToArchive.isSaved = false
+            try? viewContext.save()
+        }
+        }
+    
 }
 
 
