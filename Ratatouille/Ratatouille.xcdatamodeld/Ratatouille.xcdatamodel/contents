@@ -29,6 +29,7 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="ingredients" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isSaved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="mealArea" optional="YES" attributeType="String"/>
         <attribute name="mealCategory" optional="YES" attributeType="String"/>
         <attribute name="mealImage" optional="YES" attributeType="String"/>

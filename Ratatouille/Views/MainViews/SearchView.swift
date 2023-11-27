@@ -44,7 +44,8 @@ struct SearchView: View {
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button {
-                            saveMealRecipeToDB(mealId: result.id)
+                            saveMealRecipeToDB(mealId: result.id, isSaved: true)
+                
                         } label: {
                             Label("Add", systemImage: "archivebox")
                         }
@@ -132,7 +133,7 @@ struct SearchView: View {
         }
     }
     
-    func saveMealRecipeToDB(mealId: String) {
+    func saveMealRecipeToDB(mealId: String, isSaved: Bool) {
         networkManager.fetchMealDetailsByID(mealId: mealId) { result in
             switch result {
             case .success(let fetchedMeal):
@@ -146,6 +147,7 @@ struct SearchView: View {
                     newMeal.mealName = fetchedMeal.strMeal
                     newMeal.mealInstructions = fetchedMeal.strInstructions
                     newMeal.mealYoutube = fetchedMeal.strYoutube
+                    newMeal.isSaved = true
                     
                     do {
                         try viewContext.save()
