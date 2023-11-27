@@ -17,6 +17,7 @@ struct CustomLoadButton: View {
         Button(action: action) {
             Text(title)
                 .padding()
+                .frame(width: 110, height: 50)
                 .foregroundColor(.white)
                 .font(.headline.bold())
                 .background(LinearGradient(colors: [.customPurpleMedium, .customPurpleDark], startPoint: .top, endPoint: .bottom))

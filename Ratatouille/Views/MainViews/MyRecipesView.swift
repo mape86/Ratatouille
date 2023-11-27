@@ -11,8 +11,8 @@ struct MyRecipesView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(entity:
-                    MealEntity.entity(),
+    @FetchRequest(
+                  entity: MealEntity.entity(),
                   sortDescriptors: [NSSortDescriptor(keyPath: \MealEntity.mealName, ascending: true)]
     ) var meals: FetchedResults<MealEntity>
     
