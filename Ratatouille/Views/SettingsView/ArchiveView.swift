@@ -43,23 +43,40 @@ struct ArchiveView: View {
             Section(header: Text("Mine Oppskrifter")) {
                 List {
                     ForEach(archivedMeals) {meal in
-                        Text(meal.mealName ?? "")
-                            .swipeActions(edge: .leading) {
-                                Button {
-                                    meal.isSaved = true
-                                    try? viewContext.save()
-                                } label: {
-                                    Label("Gjenopprett", systemImage: "plus")
+                        HStack{
+                            if let mealImage = meal.mealImage, let url = URL(string: mealImage) {
+                                AsyncImage(url: url) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                        .frame(width: 70, height: 70)
+                                        .cornerRadius(10)
+                                } placeholder: {
+                                    ProgressView()
                                 }
-                                .tint(.green)
-                                
-                                Button(role: .destructive) {
-                                    viewContext.delete(meal)
-                                    try? viewContext.save()
-                                } label: {
-                                    Label("Slett", systemImage: "trash")
-                                }
+                            } else {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .frame(width: 70, height: 70)
+                                    .cornerRadius(10)
                             }
+                            Text(meal.mealName ?? "Ukjent måltid")
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button {
+                                meal.isSaved = true
+                                try? viewContext.save()
+                            } label: {
+                                Label("Gjenopprett", systemImage: "plus")
+                            }
+                            .tint(.green)
+                            
+                            Button(role: .destructive) {
+                                viewContext.delete(meal)
+                                try? viewContext.save()
+                            } label: {
+                                Label("Slett", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }

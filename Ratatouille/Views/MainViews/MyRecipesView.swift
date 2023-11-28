@@ -69,7 +69,6 @@ struct MyRecipesView: View {
                                             .cornerRadius(10)
                                     }
                                     Text(meal.mealName ?? "Ukjent måltid")
-                                    Text(meal.isSaved ? "true" : "false")
                                 }
                                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                     Button(role: .destructive) {
