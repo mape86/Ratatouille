@@ -12,7 +12,7 @@ struct RecipeDetailView: View {
     let id: String
     @State private var recipe: Meal?
     @State private var isLoading = true
-    @State private var errorMsg: String?
+    @State private var errorMessage: String?
     @ObservedObject var networkManager = NetworkManager.shared
     
     var body: some View {
@@ -79,7 +79,7 @@ struct RecipeDetailView: View {
                         .padding()
                         .background(.regularMaterial)
                     }
-                } else if let errorMsg = errorMsg {
+                } else if let errorMsg = errorMessage {
                     Text(errorMsg)
                 } else {
                     ProgressView()
@@ -105,7 +105,7 @@ struct RecipeDetailView: View {
                   case .success(let meal):
                       self.recipe = meal
                   case .failure(let error):
-                      self.errorMsg = error.localizedDescription
+                      self.errorMessage = error.localizedDescription
                   }
               }
           }

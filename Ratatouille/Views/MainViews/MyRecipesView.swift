@@ -51,31 +51,33 @@ struct MyRecipesView: View {
                             .padding(.horizontal, 55)
                             .multilineTextAlignment(.center)
                         ForEach(meals, id: \.self) {meal in
-                            if meal.isSaved == true {
-                                HStack{
-                                    if let mealImage = meal.mealImage, let url = URL(string: mealImage) {
-                                        AsyncImage(url: url) { image in
-                                            image.resizable()
-                                                .scaledToFit()
+                            NavigationLink(destination: EditRecipeView(meal: meal)) {
+                                if meal.isSaved == true {
+                                    HStack{
+                                        if let mealImage = meal.mealImage, let url = URL(string: mealImage) {
+                                            AsyncImage(url: url) { image in
+                                                image.resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 70, height: 70)
+                                                    .cornerRadius(10)
+                                            } placeholder: {
+                                                ProgressView()
+                                            }
+                                        } else {
+                                            Image(systemName: "photo")
+                                                .resizable()
                                                 .frame(width: 70, height: 70)
                                                 .cornerRadius(10)
-                                        } placeholder: {
-                                            ProgressView()
                                         }
-                                    } else {
-                                        Image(systemName: "photo")
-                                            .resizable()
-                                            .frame(width: 70, height: 70)
-                                            .cornerRadius(10)
+                                        Text(meal.mealName ?? "Ukjent måltid")
                                     }
-                                    Text(meal.mealName ?? "Ukjent måltid")
-                                }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                    Button(role: .destructive) {
-                                        itemToArchive = meal
-                                        showUserAlert = true
-                                    } label: {
-                                        Label("Arkiver", systemImage: "archivebox")
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                        Button(role: .destructive) {
+                                            itemToArchive = meal
+                                            showUserAlert = true
+                                        } label: {
+                                            Label("Arkiver", systemImage: "archivebox")
+                                        }
                                     }
                                 }
                             }
