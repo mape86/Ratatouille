@@ -36,7 +36,9 @@ struct SearchByAreaView: View {
             } else {
                 Picker("Velg område", selection: $chosenArea) {
                     ForEach(areas, id: \.self) {area in
-                        Text(area.areaName ?? "").tag(area.areaName ?? "")
+                        if area.isSaved == true {
+                            Text(area.areaName ?? "").tag(area.areaName ?? "")
+                        }
                     }
                 }
             }
@@ -57,7 +59,7 @@ struct SearchByAreaView: View {
                     .alert(isPresented: $isShowingAlert) {
                         Alert(
                             title: Text("Advarsel"),
-                            message: Text("Du er i ferd med å slette hele listen fra databasen. Vil du fortsette?"),
+                            message: Text("Du er i ferd med å slette hele listen fra databasen, dette gjelder også områder du har lagt til din liste. Vil du fortsette?"),
                             primaryButton: .destructive(Text("Slett")) {
                                 deleteAreaListFromDB()
                             },
@@ -96,6 +98,7 @@ struct SearchByAreaView: View {
         areaNames.forEach { areaName in
             let newArea = AreaEntity(context: viewContext)
             newArea.areaName = areaName
+            newArea.isSaved = true
         }
         do {
             try viewContext.save()

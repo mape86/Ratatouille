@@ -41,44 +41,7 @@ final class NetworkManager: ObservableObject {
     
     
     private init () {}
-    
-    //MARK: Flag conversion function
-    var areaToCountryCode: [String: String] = [ : ]
-    
-    func areaNameToCountryCode(_ areaName: String) -> String? {
         
-        let areaMapping = [
-            "American": "US",
-            "British": "GB",
-            "Canadian": "CA",
-            "Chinese": "CN",
-            "Dutch": "NL",
-            "Egyptian": "EG",
-            "French": "FR",
-            "Greek": "GR",
-            "Indian": "IN",
-            "Irish": "IE",
-            "Italian": "IT",
-            "Jamaican": "JM",
-            "Japanese": "JP",
-            "Kenyan": "KE",
-            "Malaysian": "MY",
-            "Mexican": "MX",
-            "Moroccan": "MA",
-            "Polish": "PL",
-            "Portuguese": "PT",
-            "Russian": "RU",
-            "Spanish": "ES",
-            "Thai": "TH",
-            "Tunisian": "TN",
-            "Turkish": "TR",
-            "Unknown": "US",
-            "Vietnamese": "VN"
-        ]
-        
-        return areaMapping[areaName]
-    }
-    
     //MARK: Area Functions
     
     func fetchAreaList(completed: @escaping ([String]) -> Void) {
@@ -96,10 +59,6 @@ final class NetworkManager: ObservableObject {
                 let decoder = JSONDecoder()
                 let areaResponse = try decoder.decode(MealAreaListResponse.self, from: data)
                 let areaNames = areaResponse.meals.map { $0.strArea}
-                
-                areaResponse.meals.forEach { meal in
-                    self.areaToCountryCode[meal.strArea] = self.areaNameToCountryCode(meal.strArea)
-                   }
                 
                 DispatchQueue.main.async {
                     completed(areaNames)
