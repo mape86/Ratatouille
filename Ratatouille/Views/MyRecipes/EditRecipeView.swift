@@ -16,6 +16,8 @@ struct EditRecipeView: View {
     
     @State private var areaToSelect: String
     @State private var categoryToSelect: String
+    @State private var newInstructions: String = ""
+    @State private var newName: String = ""
     
     @FetchRequest(
         entity: AreaEntity.entity(),
@@ -31,10 +33,17 @@ struct EditRecipeView: View {
         self.meal = meal
         _areaToSelect = State(initialValue: meal.mealArea ?? "")
         _categoryToSelect = State(initialValue: meal.mealCategory ?? "")
+        _newInstructions = State(initialValue: meal.mealInstructions ?? "")
+        _newName = State(initialValue: meal.mealName ?? "")
     }
     
     var body: some View {
         Form {
+            
+            Section(header: Text("Endre navn:")) {
+                TextField("Navn", text: $newName)
+            }
+            
             Section(header: Text("Endre område eller kategori:")) {
                 Picker("Område", selection: $areaToSelect) {
                     ForEach(arear, id: \.self) { area in
@@ -49,10 +58,17 @@ struct EditRecipeView: View {
                 }
             }
             
+            Section(header: Text("Endre instruksjoner:")) {
+                TextEditor(text: $newInstructions)
+                    .frame(height: 200)
+            }
+            
             Section {
                 Button("Lagre") {
                     meal.mealArea = areaToSelect
                     meal.mealCategory = categoryToSelect
+                    meal.mealInstructions = newInstructions
+                    meal.mealName = newName
                     
                     saveMealToDB()
                 }

@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-struct EditAreaView: View {
+struct SettingsAreaListView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -21,6 +21,7 @@ struct EditAreaView: View {
     @State var isLoading: Bool = false
     @State private var isPresented = false
     @State private var isShowingAlert = false
+
     
     func areaNameToCountryCode(_ areaName: String) -> String? {
         
@@ -63,41 +64,41 @@ struct EditAreaView: View {
     //MARK: Main View
     
     var body: some View {
-        NavigationView {
+        
             List{
                 Button("Legg til område") {
-                    isPresented = true
+                    
                 }
                 ForEach(areas, id: \.self) { area in
                     if area.isSaved == true {
-                        HStack {
-                            Text(area.areaName ?? "Ukjent område")
-                            
-                            Spacer()
-                            
-                            if let countryCode = areaNameToCountryCode(area.areaName ?? "Unknown"), let url = URL(string: "https://www.flagsapi.com/\(countryCode)/flat/64.png") {
-                                AsyncImage(url: url) { image in
-                                    image.resizable()
-                                        .scaledToFit()
+                        NavigationLink(destination: EditAreaView(area: area)) {
+                            HStack {
+                                Text(area.areaName ?? "Ukjent område")
+                                
+                                Spacer()
+                                
+                                if let countryCode = areaNameToCountryCode(area.areaName ?? "Unknown"), let url = URL(string: "https://www.flagsapi.com/\(countryCode)/flat/64.png") {
+                                    AsyncImage(url: url) { image in
+                                        image.resizable()
+                                            .scaledToFit()
+                                            .frame(width: 46, height: 46)
+                                            .cornerRadius(10)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                } else {
+                                    Image(systemName: "photo")
+                                        .resizable()
                                         .frame(width: 46, height: 46)
                                         .cornerRadius(10)
-                                } placeholder: {
-                                    ProgressView()
                                 }
-                            } else {
-                                Image(systemName: "photo")
-                                    .resizable()
-                                    .frame(width: 46, height: 46)
-                                    .cornerRadius(10)
                             }
                         }
                     }
                 }
             }
             .navigationTitle("Rediger områder")
-           
-        }
-        .onAppear{
+            .onAppear{
             if self.areas.isEmpty {
                 loadAreasFromAPI()
             }
@@ -131,5 +132,5 @@ struct EditAreaView: View {
 }
 
 #Preview {
-    EditAreaView()
+    SettingsAreaListView()
 }

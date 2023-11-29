@@ -15,7 +15,7 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Redigering")) {
-                    NavigationLink(destination: EditAreaView()) {
+                    NavigationLink(destination: SettingsAreaListView()) {
                         HStack {
                             Image(systemName: "globe.europe.africa")
                                 .frame(maxHeight: 25)
@@ -23,7 +23,7 @@ struct SettingsView: View {
                         }
                     }
                     
-                    NavigationLink(destination: EditCategoryView()) {
+                    NavigationLink(destination: SettingsCategoryListView()) {
                         HStack{
                             Image(systemName: "c.circle")
                                 .frame(maxHeight: 25)
@@ -31,7 +31,7 @@ struct SettingsView: View {
                         }
                     }
                 
-                    NavigationLink(destination: EditIngredientView()) {
+                    NavigationLink(destination: SettingsIngredientListView()) {
                         HStack{
                             Image(systemName: "carrot")
                                 .frame(maxHeight: 25)

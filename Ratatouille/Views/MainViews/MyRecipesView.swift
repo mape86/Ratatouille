@@ -51,8 +51,8 @@ struct MyRecipesView: View {
                             .padding(.horizontal, 55)
                             .multilineTextAlignment(.center)
                         ForEach(meals, id: \.self) {meal in
+                            if meal.isSaved == true {
                             NavigationLink(destination: EditRecipeView(meal: meal)) {
-                                if meal.isSaved == true {
                                     HStack{
                                         if let mealImage = meal.mealImage, let url = URL(string: mealImage) {
                                             AsyncImage(url: url) { image in

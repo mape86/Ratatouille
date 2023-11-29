@@ -47,7 +47,7 @@ struct SearchView: View {
                             saveMealRecipeToDB(mealId: result.id, isSaved: true)
                 
                         } label: {
-                            Label("Add", systemImage: "archivebox")
+                            Label("Lagre", systemImage: "archivebox")
                         }
                     }
                 }

@@ -81,6 +81,7 @@ struct ArchiveView: View {
                 }
             }
         }
+        .navigationTitle("Administrere Arkiv")
     }
 }
 
