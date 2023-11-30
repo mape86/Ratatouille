@@ -39,6 +39,8 @@
 		4962A2462B06215600935707 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962A2452B06215600935707 /* CoreDataManager.swift */; };
 		498320FA2B05272F002B8502 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498320F92B05272F002B8502 /* NetworkManager.swift */; };
 		49C62EE32B15CF8B009A48E3 /* EditRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C62EE22B15CF8B009A48E3 /* EditRecipeView.swift */; };
+		49F68B372B187BD2006BB7AE /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F68B362B187BD2006BB7AE /* EditCategoryView.swift */; };
+		49F68B3B2B18A8E0006BB7AE /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F68B3A2B18A8E0006BB7AE /* AddCategoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +96,8 @@
 		4962A2452B06215600935707 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		498320F92B05272F002B8502 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		49C62EE22B15CF8B009A48E3 /* EditRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecipeView.swift; sourceTree = "<group>"; };
+		49F68B362B187BD2006BB7AE /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
+		49F68B3A2B18A8E0006BB7AE /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,10 +161,9 @@
 		492261E62B04081500714F6B /* SettingsViews */ = {
 			isa = PBXGroup;
 			children = (
-				492C90D92B0B95D400FBA4D6 /* SettingsCategoryListView.swift */,
-				492C90DB2B0B95EA00FBA4D6 /* SettingsAreaListView.swift */,
+				49F68B392B18A8BC006BB7AE /* CategoryViews */,
+				49F68B382B18A8AC006BB7AE /* AreaViews */,
 				492C90DD2B0B962300FBA4D6 /* SettingsIngredientListView.swift */,
-				492615FA2B17DBBA005C8148 /* EditAreaView.swift */,
 				492C90DF2B0B963E00FBA4D6 /* ArchiveView.swift */,
 			);
 			path = SettingsViews;
@@ -346,6 +349,25 @@
 			path = APINetworkManager;
 			sourceTree = "<group>";
 		};
+		49F68B382B18A8AC006BB7AE /* AreaViews */ = {
+			isa = PBXGroup;
+			children = (
+				492C90DB2B0B95EA00FBA4D6 /* SettingsAreaListView.swift */,
+				492615FA2B17DBBA005C8148 /* EditAreaView.swift */,
+			);
+			path = AreaViews;
+			sourceTree = "<group>";
+		};
+		49F68B392B18A8BC006BB7AE /* CategoryViews */ = {
+			isa = PBXGroup;
+			children = (
+				492C90D92B0B95D400FBA4D6 /* SettingsCategoryListView.swift */,
+				49F68B362B187BD2006BB7AE /* EditCategoryView.swift */,
+				49F68B3A2B18A8E0006BB7AE /* AddCategoryView.swift */,
+			);
+			path = CategoryViews;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -484,6 +506,7 @@
 				49184C152B06BA65005100CE /* CustomLoadButton.swift in Sources */,
 				498320FA2B05272F002B8502 /* NetworkManager.swift in Sources */,
 				4939D3612B04DB6B003D9B95 /* AreaModel.swift in Sources */,
+				49F68B372B187BD2006BB7AE /* EditCategoryView.swift in Sources */,
 				492615FB2B17DBBA005C8148 /* EditAreaView.swift in Sources */,
 				492C90D82B0B95B300FBA4D6 /* RecipeDetailView.swift in Sources */,
 				4962A23C2B06112900935707 /* SearchByCategoryView.swift in Sources */,
@@ -493,6 +516,7 @@
 				495CB0A22B02B949009C0FAB /* SearchView.swift in Sources */,
 				495CB0D12B02B9A0009C0FAB /* SplashScreenView.swift in Sources */,
 				492C90DE2B0B962300FBA4D6 /* SettingsIngredientListView.swift in Sources */,
+				49F68B3B2B18A8E0006BB7AE /* AddCategoryView.swift in Sources */,
 				4962A2402B06114600935707 /* SearchByTextView.swift in Sources */,
 				4939D35D2B04DB4A003D9B95 /* IngredientModel.swift in Sources */,
 				495CB0AC2B02B94A009C0FAB /* Ratatouille.xcdatamodeld in Sources */,

@@ -52,7 +52,7 @@ struct MyRecipesView: View {
                             .multilineTextAlignment(.center)
                         ForEach(meals, id: \.self) {meal in
                             if meal.isSaved == true {
-                            NavigationLink(destination: EditRecipeView(meal: meal)) {
+                                NavigationLink(destination: EditRecipeView(meal: meal)) {
                                     HStack{
                                         if let mealImage = meal.mealImage, let url = URL(string: mealImage) {
                                             AsyncImage(url: url) { image in
@@ -85,12 +85,13 @@ struct MyRecipesView: View {
                     }
                     .alert(isPresented: $showUserAlert) {
                         Alert(
-                        title: Text("Arkivere Oppskriften"),
-                        message: Text("Er du sikke på at du vil sende denne oppskriften til arkivet?"),
-                        primaryButton: .default(Text("Avbryt")),
-                        secondaryButton: .destructive(Text("Arkiver"), action: sendToArchive)
+                            title: Text("Arkivere Oppskriften"),
+                            message: Text("Er du sikke på at du vil sende denne oppskriften til arkivet?"),
+                            primaryButton: .default(Text("Avbryt")),
+                            secondaryButton: .destructive(Text("Arkiver"), action: sendToArchive)
                         )
-                    }                }
+                    }
+                }
             }
         }
         .navigationTitle("Mine oppskrifter")

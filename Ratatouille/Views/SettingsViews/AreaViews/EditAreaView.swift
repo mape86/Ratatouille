@@ -42,13 +42,15 @@ struct EditAreaView: View {
                     }
                     presentationMode.wrappedValue.dismiss()
                 }
+                .foregroundColor(.blue)
                     
                 Button("Avbryt") {
                     presentationMode.wrappedValue.dismiss()
                 }
+                .foregroundColor(.red)
             }
         }
-        .navigationTitle("Endre område")
+        .navigationTitle("Rediger område")
     }
     
     private func updateMealAreas(originalName: String?, newName: String) {

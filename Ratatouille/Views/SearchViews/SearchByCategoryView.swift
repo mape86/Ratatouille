@@ -35,7 +35,9 @@ struct SearchByCategoryView: View {
             } else {
                 Picker("Velg kategori", selection: $chosenCategory) {
                     ForEach(categories, id: \.self) {category in
-                        Text(category.categoryName ?? "").tag(category.categoryName ?? "")
+                        if category.isSaved == true {
+                            Text(category.categoryName ?? "").tag(category.categoryName ?? "")
+                        }
                     }
                 }
             }
@@ -86,15 +88,21 @@ struct SearchByCategoryView: View {
     
     private func loadCategoriesFromAPI() {
         isLoading = true
-        networkManager.fetchCategoryList { categoryNames in
-            saveCategoriesToDB(categoryNames: categoryNames)
+        networkManager.fetchCategoryList { categoryNames, categoryImages, categoryDescriptions in
+            saveCategoriesToDB(categoryNames: categoryNames, categoryImages: categoryImages, categoryDescriptions: categoryDescriptions)
         }
     }
     
-    private func saveCategoriesToDB(categoryNames: [String]) {
-        categoryNames.forEach { categoryName in
+    private func saveCategoriesToDB(categoryNames: [String], categoryImages: [String], categoryDescriptions: [String]) {
+        for (index, name) in categoryNames.enumerated() {
+            let image = categoryImages[index]
+            let description = categoryDescriptions[index]
+            
             let newCategory = CategoryEntity(context: viewContext)
-            newCategory.categoryName = categoryName
+            newCategory.categoryName = name
+            newCategory.categoryImage = image
+            newCategory.categoryDescription = description
+            newCategory.isSaved = true
         }
         do {
             try viewContext.save()

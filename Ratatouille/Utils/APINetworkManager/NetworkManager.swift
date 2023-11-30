@@ -13,9 +13,9 @@ final class NetworkManager: ObservableObject {
     static let shared = NetworkManager()
     
     //Lists
-    @Published var areas: [MealAreaList] = []
-    @Published var categories: [MealCategoryList] = []
-    @Published var ingredientsList: [MealIngredientList] = []
+//    @Published var areas: [MealAreaList] = []
+//    @Published var categories: [MealCategoryList] = []
+//    @Published var ingredientsList: [MealIngredientList] = []
     
     //MARK: Search URLs
     //List and filter by areas
@@ -108,24 +108,26 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Category Functions
     
-    func fetchCategoryList(completed: @escaping ([String]) -> Void) {
-        guard let url = URL(string: categoryListURL) else {
+    func fetchCategoryList(completed: @escaping ([String], [String], [String]) -> Void) {
+        guard let url = URL(string: listAllMealCategoriesURL) else {
             return
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
-                completed([])
+                completed([], [], [])
                 return
             }
             
             do {
                 let decoder = JSONDecoder()
-                let categoryResponse = try decoder.decode(MealCategoryListResponse.self, from: data)
-                let categoryNames = categoryResponse.meals.map {$0.strCategory}
+                let categoryResponse = try decoder.decode(MealCategoryResponse.self, from: data)
+                let categoryNames = categoryResponse.categories.map {$0.strCategory}
+                let categoryImage = categoryResponse.categories.map {$0.strCategoryThumb}
+                let categoryDescription = categoryResponse.categories.map {$0.strCategoryDescription}
                 DispatchQueue.main.async {
-                    completed(categoryNames)
+                    completed(categoryNames, categoryImage, categoryDescription)
                 }
             }catch {
                 print("Feilet ved dekoding. \(error.localizedDescription)")
