@@ -25,67 +25,14 @@ struct SettingsAreaListView: View {
         sortDescriptors: []
     ) var areas: FetchedResults<AreaEntity>
     
+    @StateObject var convertFlag: FlagConvert = FlagConvert()
+    @ObservedObject var coreDataManager: CoreDataManager = CoreDataManager.shared
     @ObservedObject var networkManager = NetworkManager.shared
     @State var isLoading: Bool = false
     @State private var activeAlert: ActiveAlert?
     @State private var itemToArchive: AreaEntity?
     @State private var addNewAreaName: String = ""
-    
-    func areaNameToCountryCode(_ areaName: String) -> String? {
         
-        let areaMapping = [
-            // Areas in API:
-            "American": "US",
-            "British": "GB",
-            "Canadian": "CA",
-            "Chinese": "CN",
-            "Dutch": "NL",
-            "Egyptian": "EG",
-            "Filipino" : "PH",
-            "French": "FR",
-            "Greek": "GR",
-            "Indian": "IN",
-            "Irish": "IE",
-            "Italian": "IT",
-            "Jamaican": "JM",
-            "Japanese": "JP",
-            "Kenyan": "KE",
-            "Malaysian": "MY",
-            "Mexican": "MX",
-            "Moroccan": "MA",
-            "Polish": "PL",
-            "Portuguese": "PT",
-            "Russian": "RU",
-            "Spanish": "ES",
-            "Thai": "TH",
-            "Tunisian": "TN",
-            "Turkish": "TR",
-            "Vietnamese": "VN",
-            
-            //Areas not in API:
-            "Austraila": "AU",
-            "Argentina": "AR",
-            "Denmark": "DK",
-            "Danish": "DK",
-            "Danmark": "DK",
-            "Dansk": "DK",
-            "Finland": "FI",
-            "Finnish": "FI",
-            "Nordic": "NO",
-            "Norge": "NO",
-            "Norsk": "NO",
-            "Norway": "NO",
-            "Norwegian": "NO",
-            "Sweden": "SE",
-            "Swedish": "SE",
-            "Sverige": "SE",
-            
-            
-        ]
-        
-        return areaMapping[areaName]
-    }
-    
     //MARK: Main View
     
     var body: some View {
@@ -108,7 +55,7 @@ struct SettingsAreaListView: View {
                             
                             Spacer()
                             
-                            if let countryCode = areaNameToCountryCode(area.areaName ?? "Unknown"), let url = URL(string: "https://www.flagsapi.com/\(countryCode)/flat/64.png") {
+                            if let url = URL(string: "https://www.flagsapi.com/\(area.countryCode ?? "")/flat/64.png") {
                                 AsyncImage(url: url) { image in
                                     image.resizable()
                                         .scaledToFit()
@@ -184,6 +131,8 @@ struct SettingsAreaListView: View {
             let newArea = AreaEntity(context: viewContext)
             newArea.areaName = areaName
             newArea.isSaved = true
+            let countryCode = convertFlag.areaNameToCountryCode(areaName)
+            newArea.countryCode = countryCode
         }
         do {
             
@@ -205,6 +154,8 @@ struct SettingsAreaListView: View {
         let newArea = AreaEntity(context: viewContext)
         newArea.areaName = addNewAreaName
         newArea.isSaved = true
+        let countryCode = convertFlag.areaNameToCountryCode(newArea.areaName ?? "")
+        newArea.countryCode = countryCode
         
         do {
             try viewContext.save()

@@ -34,10 +34,5 @@ struct MealAreaListResponse: Codable {
     
 }
 
-//extension FilteredArea {
-//    func toSharedSearchResult() -> SharedSearchResult {
-//        SharedSearchResult(id: idMeal, name: strMeal, thumb: strMealThumb, description: nil)
-//    }
-//}
 
 

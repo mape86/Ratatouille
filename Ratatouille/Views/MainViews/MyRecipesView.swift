@@ -12,8 +12,8 @@ struct MyRecipesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
-                  entity: MealEntity.entity(),
-                  sortDescriptors: [NSSortDescriptor(keyPath: \MealEntity.mealName, ascending: true)]
+        entity: MealEntity.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \MealEntity.mealName, ascending: true)]
     ) var meals: FetchedResults<MealEntity>
     
     @State private var showUserAlert = false
@@ -54,6 +54,10 @@ struct MyRecipesView: View {
                             if meal.isSaved == true {
                                 NavigationLink(destination: EditRecipeView(meal: meal)) {
                                     HStack{
+                                        if meal.isFavorite == true {
+                                            Image(systemName: "star.fill")
+                                                .foregroundColor(.yellow)
+                                        }
                                         if let mealImage = meal.mealImage, let url = URL(string: mealImage) {
                                             AsyncImage(url: url) { image in
                                                 image.resizable()
@@ -79,6 +83,18 @@ struct MyRecipesView: View {
                                             Label("Arkiver", systemImage: "archivebox")
                                         }
                                     }
+                                    .swipeActions(edge: .leading) {
+                                        Button(role: .none) {
+                                            meal.isFavorite.toggle()
+                                            try? viewContext.save()
+                                        } label: {
+                                            if meal.isFavorite == true {
+                                                Label("Fjern favoritt", systemImage: "star.slash")
+                                            } else {
+                                                Label("Favoriser", systemImage: "star.fill")
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -102,7 +118,7 @@ struct MyRecipesView: View {
             mealItemToArchive.isSaved = false
             try? viewContext.save()
         }
-        }
+    }
     
 }
 

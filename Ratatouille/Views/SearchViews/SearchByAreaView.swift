@@ -16,6 +16,7 @@ struct SearchByAreaView: View {
     
     var searchTerm: ([SharedSearchResult]) -> Void
 
+    @StateObject var convertFlag: FlagConvert = FlagConvert()
     @ObservedObject var networkManager = NetworkManager.shared
     @State private var chosenArea: String = ""
     @State private var areas: [AreaEntity] = []
@@ -99,6 +100,8 @@ struct SearchByAreaView: View {
             let newArea = AreaEntity(context: viewContext)
             newArea.areaName = areaName
             newArea.isSaved = true
+            let countryCode = convertFlag.areaNameToCountryCode(areaName)
+            newArea.countryCode = countryCode
         }
         do {
             try viewContext.save()

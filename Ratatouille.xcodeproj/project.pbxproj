@@ -37,6 +37,8 @@
 		4962A2402B06114600935707 /* SearchByTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962A23F2B06114600935707 /* SearchByTextView.swift */; };
 		4962A2422B061D8500935707 /* NMError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962A2412B061D8500935707 /* NMError.swift */; };
 		4962A2462B06215600935707 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962A2452B06215600935707 /* CoreDataManager.swift */; };
+		4962EDA62B1913A000494269 /* FlagConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962EDA52B1913A000494269 /* FlagConvert.swift */; };
+		4962EDA92B192C6000494269 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962EDA82B192C6000494269 /* SettingsViewModel.swift */; };
 		498320FA2B05272F002B8502 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498320F92B05272F002B8502 /* NetworkManager.swift */; };
 		49C62EE32B15CF8B009A48E3 /* EditRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C62EE22B15CF8B009A48E3 /* EditRecipeView.swift */; };
 		49F68B372B187BD2006BB7AE /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F68B362B187BD2006BB7AE /* EditCategoryView.swift */; };
@@ -94,6 +96,8 @@
 		4962A23F2B06114600935707 /* SearchByTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchByTextView.swift; sourceTree = "<group>"; };
 		4962A2412B061D8500935707 /* NMError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NMError.swift; sourceTree = "<group>"; };
 		4962A2452B06215600935707 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		4962EDA52B1913A000494269 /* FlagConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagConvert.swift; sourceTree = "<group>"; };
+		4962EDA82B192C6000494269 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		498320F92B05272F002B8502 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		49C62EE22B15CF8B009A48E3 /* EditRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecipeView.swift; sourceTree = "<group>"; };
 		49F68B362B187BD2006BB7AE /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
@@ -161,9 +165,9 @@
 		492261E62B04081500714F6B /* SettingsViews */ = {
 			isa = PBXGroup;
 			children = (
+				4962EDA72B19265F00494269 /* IngredientViews */,
 				49F68B392B18A8BC006BB7AE /* CategoryViews */,
 				49F68B382B18A8AC006BB7AE /* AreaViews */,
-				492C90DD2B0B962300FBA4D6 /* SettingsIngredientListView.swift */,
 				492C90DF2B0B963E00FBA4D6 /* ArchiveView.swift */,
 			);
 			path = SettingsViews;
@@ -317,6 +321,7 @@
 		4962A2432B0620E000935707 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				4962EDA82B192C6000494269 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -324,15 +329,24 @@
 		4962A2442B06212700935707 /* CoreDataManager */ = {
 			isa = PBXGroup;
 			children = (
+				4962A2452B06215600935707 /* CoreDataManager.swift */,
 			);
 			path = CoreDataManager;
+			sourceTree = "<group>";
+		};
+		4962EDA72B19265F00494269 /* IngredientViews */ = {
+			isa = PBXGroup;
+			children = (
+				492C90DD2B0B962300FBA4D6 /* SettingsIngredientListView.swift */,
+			);
+			path = IngredientViews;
 			sourceTree = "<group>";
 		};
 		498320F72B052717002B8502 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				4962EDA52B1913A000494269 /* FlagConvert.swift */,
 				49184C142B06BA65005100CE /* CustomLoadButton.swift */,
-				4962A2452B06215600935707 /* CoreDataManager.swift */,
 				4962A2442B06212700935707 /* CoreDataManager */,
 				498320F82B05271D002B8502 /* APINetworkManager */,
 				4957C5062B0C0C4000BEB7C7 /* ColorExtension.swift */,
@@ -516,9 +530,11 @@
 				495CB0A22B02B949009C0FAB /* SearchView.swift in Sources */,
 				495CB0D12B02B9A0009C0FAB /* SplashScreenView.swift in Sources */,
 				492C90DE2B0B962300FBA4D6 /* SettingsIngredientListView.swift in Sources */,
+				4962EDA92B192C6000494269 /* SettingsViewModel.swift in Sources */,
 				49F68B3B2B18A8E0006BB7AE /* AddCategoryView.swift in Sources */,
 				4962A2402B06114600935707 /* SearchByTextView.swift in Sources */,
 				4939D35D2B04DB4A003D9B95 /* IngredientModel.swift in Sources */,
+				4962EDA62B1913A000494269 /* FlagConvert.swift in Sources */,
 				495CB0AC2B02B94A009C0FAB /* Ratatouille.xcdatamodeld in Sources */,
 				492C90DA2B0B95D400FBA4D6 /* SettingsCategoryListView.swift in Sources */,
 				492261E42B04063900714F6B /* CustomTabView.swift in Sources */,

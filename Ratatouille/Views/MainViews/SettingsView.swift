@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @AppStorage ("darkModeActive") var darkModeActive: Bool = false
+    @AppStorage ("darkModeActive") private var darkModeActive = false
     
     var body: some View {
         NavigationView {
@@ -40,12 +40,7 @@ struct SettingsView: View {
                     }
                 }
                 Section(header: Text("Endre Mode")) {
-                    Toggle(isOn: $darkModeActive) {
-                        Text(darkModeActive ? "Mørk modus" : "Lys modus")
-                    }
-                    .onChange(of: darkModeActive) {newValue in
-                        UIApplication.shared.windows.first?.overrideUserInterfaceStyle = newValue ? .dark : .light
-                    }
+                    Toggle("Mørk Modus", isOn: $darkModeActive)
                 }
                 
                 Section(header: Text("Rediger arkiv")) {
@@ -55,9 +50,6 @@ struct SettingsView: View {
                 }
             }
             .navigationBarTitle("Innstillinger")
-        }
-        .onAppear{
-            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = darkModeActive ? .dark : .light
         }
     }
 }
