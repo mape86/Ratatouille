@@ -14,8 +14,8 @@ final class NetworkManager: ObservableObject {
     
     //Lists
 //    @Published var areas: [MealAreaList] = []
-//    @Published var categories: [MealCategoryList] = []
-//    @Published var ingredientsList: [MealIngredientList] = []
+    @Published var categories: [MealCategoryList] = []
+    @Published var ingredientsList: [MealIngredientList] = []
     
     //MARK: Search URLs
     //List and filter by areas
@@ -172,7 +172,7 @@ final class NetworkManager: ObservableObject {
     
     //MARK: Ingredient Functions
     
-    func fetchIngredientList(completed: @escaping ([String]) -> Void) {
+    func fetchIngredientList(completed: @escaping ([String], [String?], [String?]) -> Void) {
         guard let url = URL(string: ingredientListURL) else {
             return
         }
@@ -180,16 +180,18 @@ final class NetworkManager: ObservableObject {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Feil ved nettverskforespørsel: \(error?.localizedDescription ?? "Ukjent feil")")
-                completed([])
+                completed([], [], [])
                 return
             }
             
             do {
                 let decoder = JSONDecoder()
-                let ingredientResponse = try decoder.decode(MealIngredientListResponse.self, from: data)
+                let ingredientResponse = try decoder.decode(MealIngredientResponse.self, from: data)
                 let ingredientNames = ingredientResponse.meals.map { $0.strIngredient}
+                let ingredientType = ingredientResponse.meals.map { $0.strType}
+                let ingredientDescription = ingredientResponse.meals.map { $0.strDescription}
                 DispatchQueue.main.async {
-                    completed(ingredientNames)
+                    completed(ingredientNames, ingredientDescription, ingredientType)
                 }
             }catch {
                 print("Feilet ved dekoding. \(error.localizedDescription)")

@@ -31,28 +31,25 @@ struct SearchByAreaView: View {
                 .font(.title.bold())
                 .foregroundStyle(LinearGradient(colors: [.customPurpleDark, .customPurpleMedium], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .padding()
-    
-            if isLoading {
-                ProgressView("Laster inn områder...")
-            } else {
-                Picker("Velg område", selection: $chosenArea) {
-                    ForEach(areas, id: \.self) {area in
-                        if area.isSaved == true {
-                            Text(area.areaName ?? "").tag(area.areaName ?? "")
-                        }
-                    }
-                }
-            }
+            
             HStack {
+                
                 Spacer()
+                
                 VStack {
                     CustomLoadButton(title: "last inn") {
-                        loadAreasFromAPI()
+                        if areas.isEmpty {
+                            loadAreasFromAPI()
+                        } else {
+                            print("Allerede lastet inn")
+                        }
                     }
-                    Text("Last inn fra API")
+                    Text("fra API")
                         .font(.callout)
                 }
+                
                 Spacer()
+                
                 VStack{
                     CustomLoadButton(title: "Slett") {
                         self.isShowingAlert = true
@@ -67,8 +64,10 @@ struct SearchByAreaView: View {
                             secondaryButton: .cancel(Text("Avbryt"))
                         )
                     }
-                    Text("Slett fra database")
+                    Text("fra database")
+                        .font(.callout)
                 }
+                
                 Spacer()
             }
         }
@@ -76,14 +75,33 @@ struct SearchByAreaView: View {
             fetchAreasFromDB()
         }
         
-        CustomLoadButton(title: "Søk") {
-            networkManager.fetchMealsByArea(area: chosenArea) { mealName in
-                searchTerm(mealName)
-                isPresented = false
+        Spacer()
+        
+        VStack {
+            CustomLoadButton(title: "Søk") {
+                networkManager.fetchMealsByArea(area: chosenArea) { mealName in
+                    searchTerm(mealName)
+                    isPresented = false
+                }
+            }
+            if isLoading {
+                ProgressView("Laster inn områder...")
+            } else {
+                HStack {
+                    Picker("Velg område", selection: $chosenArea) {
+                        ForEach(areas, id: \.self) {area in
+                            if area.isSaved == true {
+                                Text(area.areaName ?? "").tag(area.areaName ?? "")
+                            }
+                        }
+                    }
+                }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.gray.opacity(0.5)))
+        
+        Spacer()
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .background(Color(.gray.opacity(0.5)))
     }
     
     //MARK: - Functions

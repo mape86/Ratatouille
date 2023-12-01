@@ -19,6 +19,7 @@ struct SearchByTextView: View {
         TextField("Søk etter måltid (Navn)", text: $searchText)
             .padding()
             .border(Color.accentColor, width: 1)
+            .frame(maxWidth: 300, alignment: .center)
         
         CustomLoadButton(title: "Søk") {
             networkManager.fetchMealByName(searchWord: searchText) { result in

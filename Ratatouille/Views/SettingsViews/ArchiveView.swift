@@ -28,6 +28,12 @@ struct ArchiveView: View {
         predicate: NSPredicate(format: "isSaved == false")
     ) var categories: FetchedResults<CategoryEntity>
     
+    @FetchRequest(
+        entity: IngredientEntity.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \IngredientEntity.ingredientName, ascending: true)],
+        predicate: NSPredicate(format: "isSaved == false")
+    ) var ingredients: FetchedResults<IngredientEntity>
+    
     @State private var showUserAlert = false
     
     var body: some View {
@@ -101,7 +107,42 @@ struct ArchiveView: View {
             
             Section(header: Text("Ingredienser")) {
                 List {
-                    Text("Kjøtt")
+                    ForEach(ingredients) { ingredient in
+                        HStack {
+                            if let url = URL(string: "https://www.themealdb.com/images/ingredients/\(ingredient.ingredientName ?? "")-Small.png") {
+                                AsyncImage(url: url) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                        .frame(width: 70, height: 70)
+                                        .cornerRadius(10)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                            } else {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .frame(width: 70, height: 70)
+                                    .cornerRadius(10)
+                            }
+                            Text(ingredient.ingredientName ?? "Ukjent ingrediens")
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button {
+                                ingredient.isSaved = true
+                                try? viewContext.save()
+                            } label: {
+                                Label("Gjenopprett", systemImage: "plus")
+                            }
+                            .tint(.green)
+                            
+                            Button(role: .destructive) {
+                                viewContext.delete(ingredient)
+                                try? viewContext.save()
+                            } label: {
+                                Label("Slett", systemImage: "trash")
+                            }
+                        }
+                    }
                 }
             }
             

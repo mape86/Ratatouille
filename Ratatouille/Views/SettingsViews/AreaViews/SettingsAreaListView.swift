@@ -44,7 +44,6 @@ struct SettingsAreaListView: View {
                     .border(Color.colorPurpleDark, width: 1)
                 Button("Legg til") {
                     addAreaToDB()
-                    
                 }
             }
             ForEach(areas, id: \.self) { area in

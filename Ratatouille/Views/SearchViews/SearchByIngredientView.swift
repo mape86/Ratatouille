@@ -20,6 +20,7 @@ struct SearchByIngredientView: View {
     @State private var chosenIngredient: String = ""
     @State private var isLoading: Bool = false
     @State private var isShowingAlert = false
+    @State private var hasLoaded = false
     
     @Binding var isPresented: Bool
     
@@ -28,28 +29,28 @@ struct SearchByIngredientView: View {
         VStack {
             Text("Søk ingrediens")
                 .font(.title.bold())
-                .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .foregroundStyle(LinearGradient(colors: [.customPinkLight, .customPurpleMedium], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .padding()
             
-            if isLoading {
-                ProgressView("Laster inn områder...")
-            } else {
-                Picker("Velg ingrediens", selection: $chosenIngredient) {
-                    ForEach(ingredients, id: \.self) {ingredient in
-                        Text(ingredient.ingredientName ?? "").tag(ingredient.ingredientName ?? "")
-                    }
-                }
-            }
+            
             HStack {
+                
                 Spacer()
+                
                 VStack {
                     CustomLoadButton(title: "last inn") {
-                        loadIngredientsFromAPI()
+                        if ingredients.isEmpty {
+                            loadIngredientsFromAPI()
+                        } else {
+                            print("Allerede lastet inn")
+                        }
                     }
-                    Text("Last inn fra API")
+                    Text("fra API")
                         .font(.callout)
                 }
+                
                 Spacer()
+                
                 VStack{
                     CustomLoadButton(title: "Slett") {
                         self.isShowingAlert = true
@@ -64,8 +65,10 @@ struct SearchByIngredientView: View {
                             secondaryButton: .cancel(Text("Avbryt"))
                         )
                     }
-                    Text("Slett fra database")
+                    Text("fra database")
+                        .font(.callout)
                 }
+                
                 Spacer()
             }
         }
@@ -73,35 +76,54 @@ struct SearchByIngredientView: View {
             fetchIngredientsFromDB()
         }
         
-        CustomLoadButton(title: "Søk") {
-            networkManager.fetchMealsByIngredient(ingredient: chosenIngredient) { ingredientName in
-                searchTerm(ingredientName)
-                isPresented = false
+        Spacer()
+        
+        VStack {
+            CustomLoadButton(title: "Søk") {
+                networkManager.fetchMealsByIngredient(ingredient: chosenIngredient) { ingredientName in
+                    searchTerm(ingredientName)
+                    isPresented = false
+                }
+            }
+            if isLoading {
+                ProgressView("Laster inn områder...")
+            } else {
+                Picker("Velg ingrediens", selection: $chosenIngredient) {
+                    ForEach(ingredients, id: \.self) {ingredient in
+                        Text(ingredient.ingredientName ?? "").tag(ingredient.ingredientName ?? "")
+                    }
+                }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.gray.opacity(0.5)))
+        
+        Spacer()
     }
     
     //MARK: Functions
     
     private func loadIngredientsFromAPI() {
         isLoading = true
-        networkManager.fetchIngredientList { ingredientNames in
-            saveIngredientsToDB(ingredientNames: ingredientNames)
+        networkManager.fetchIngredientList { ingredientNames, ingredientDescription, ingredientType in
+            saveIngredientsToDB(ingredientNames: ingredientNames, ingredientDescription: ingredientDescription, ingredientType: ingredientType)
         }
     }
     
-    private func saveIngredientsToDB(ingredientNames: [String]) {
-        ingredientNames.forEach { ingredientName in
+    private func saveIngredientsToDB(ingredientNames: [String], ingredientDescription: [String?], ingredientType: [String?]) {
+        for (index, name) in ingredientNames.enumerated() {
+            let type = ingredientType[index]
+            let description = ingredientDescription[index]
+            
             let newIngredient = IngredientEntity(context: viewContext)
-            newIngredient.ingredientName = ingredientName
+            newIngredient.ingredientName = name
+            newIngredient.ingredientDescription = description
+            newIngredient.ingredientType = type
+            newIngredient.isSaved = true
         }
         do {
             try viewContext.save()
             fetchIngredientsFromDB()
         } catch {
-            print("Feilet ved lagring til databasen. \(error)")
+            print("Feil ved lagring til database: \(error)")
         }
         isLoading = false
     }

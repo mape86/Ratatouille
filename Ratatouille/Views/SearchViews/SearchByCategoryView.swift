@@ -27,30 +27,27 @@ struct SearchByCategoryView: View {
         VStack {
             Text("Søk kategori")
                 .font(.title.bold())
-                .foregroundStyle(LinearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .foregroundStyle(LinearGradient(colors: [.customPurpleDark, .customPurpleMedium], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .padding()
-            
-            if isLoading {
-                ProgressView("Laster inn områder...")
-            } else {
-                Picker("Velg kategori", selection: $chosenCategory) {
-                    ForEach(categories, id: \.self) {category in
-                        if category.isSaved == true {
-                            Text(category.categoryName ?? "").tag(category.categoryName ?? "")
-                        }
-                    }
-                }
-            }
+    
             HStack {
+                
                 Spacer()
+                
                 VStack {
                     CustomLoadButton(title: "last inn") {
-                        loadCategoriesFromAPI()
+                        if categories.isEmpty {
+                            loadCategoriesFromAPI()
+                        } else {
+                            print("Allerede lastet inn")
+                        }
                     }
-                    Text("Last inn fra API")
+                    Text("fra API")
                         .font(.callout)
                 }
+                
                 Spacer()
+                
                 VStack{
                     CustomLoadButton(title: "Slett") {
                         self.isShowingAlert = true
@@ -65,8 +62,10 @@ struct SearchByCategoryView: View {
                             secondaryButton: .cancel(Text("Avbryt"))
                         )
                     }
-                    Text("Slett fra database")
+                    Text("fra database")
+                        .font(.callout)
                 }
+                
                 Spacer()
             }
         }
@@ -74,14 +73,29 @@ struct SearchByCategoryView: View {
             fetchCategoriesFromDB()
         }
         
-        CustomLoadButton(title: "Søk") {
-            networkManager.fetchMealsByCategory(category: chosenCategory) { categoryName in
-                searchTerm(categoryName)
-                isPresented = false
+        Spacer()
+        
+        VStack{
+            CustomLoadButton(title: "Søk") {
+                networkManager.fetchMealsByCategory(category: chosenCategory) { categoryName in
+                    searchTerm(categoryName)
+                    isPresented = false
+                }
+            }
+            if isLoading {
+                ProgressView("Laster inn områder...")
+            } else {
+                Picker("Velg kategori", selection: $chosenCategory) {
+                    ForEach(categories, id: \.self) {category in
+                        if category.isSaved == true {
+                            Text(category.categoryName ?? "").tag(category.categoryName ?? "")
+                        }
+                    }
+                }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.gray.opacity(0.5)))
+        
+        Spacer()
     }
     
     //MARK: Functions

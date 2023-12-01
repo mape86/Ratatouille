@@ -43,6 +43,8 @@
 		49C62EE32B15CF8B009A48E3 /* EditRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C62EE22B15CF8B009A48E3 /* EditRecipeView.swift */; };
 		49F68B372B187BD2006BB7AE /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F68B362B187BD2006BB7AE /* EditCategoryView.swift */; };
 		49F68B3B2B18A8E0006BB7AE /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F68B3A2B18A8E0006BB7AE /* AddCategoryView.swift */; };
+		49FF47FF2B19CD920066C046 /* EditIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF47FE2B19CD920066C046 /* EditIngredientView.swift */; };
+		49FF48012B19D3410066C046 /* AddIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF48002B19D3410066C046 /* AddIngredientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +104,8 @@
 		49C62EE22B15CF8B009A48E3 /* EditRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecipeView.swift; sourceTree = "<group>"; };
 		49F68B362B187BD2006BB7AE /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
 		49F68B3A2B18A8E0006BB7AE /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
+		49FF47FE2B19CD920066C046 /* EditIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIngredientView.swift; sourceTree = "<group>"; };
+		49FF48002B19D3410066C046 /* AddIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +342,8 @@
 			isa = PBXGroup;
 			children = (
 				492C90DD2B0B962300FBA4D6 /* SettingsIngredientListView.swift */,
+				49FF47FE2B19CD920066C046 /* EditIngredientView.swift */,
+				49FF48002B19D3410066C046 /* AddIngredientView.swift */,
 			);
 			path = IngredientViews;
 			sourceTree = "<group>";
@@ -526,6 +532,7 @@
 				4962A23C2B06112900935707 /* SearchByCategoryView.swift in Sources */,
 				49C62EE32B15CF8B009A48E3 /* EditRecipeView.swift in Sources */,
 				4939D35F2B04DB60003D9B95 /* CategoryModel.swift in Sources */,
+				49FF48012B19D3410066C046 /* AddIngredientView.swift in Sources */,
 				4962A2422B061D8500935707 /* NMError.swift in Sources */,
 				495CB0A22B02B949009C0FAB /* SearchView.swift in Sources */,
 				495CB0D12B02B9A0009C0FAB /* SplashScreenView.swift in Sources */,
@@ -541,6 +548,7 @@
 				4962A23E2B06113900935707 /* SearchByIngredientView.swift in Sources */,
 				4939D3632B04EA3A003D9B95 /* MealModel.swift in Sources */,
 				492C90DC2B0B95EA00FBA4D6 /* SettingsAreaListView.swift in Sources */,
+				49FF47FF2B19CD920066C046 /* EditIngredientView.swift in Sources */,
 				4962A23A2B06111600935707 /* SearchByAreaView.swift in Sources */,
 				495CB0A02B02B949009C0FAB /* RatatouilleApp.swift in Sources */,
 			);
