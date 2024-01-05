@@ -2,8 +2,6 @@
 //  ContentView.swift
 //  Ratatouille
 //
-//  Created by Marius Pettersen on 13/11/2023.
-//
 
 import SwiftUI
 import CoreData

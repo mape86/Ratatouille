@@ -2,8 +2,6 @@
 //  CategoryView.swift
 //  Ratatouille
 //
-//  Created by Marius Pettersen on 20/11/2023.
-//
 
 import SwiftUI
 

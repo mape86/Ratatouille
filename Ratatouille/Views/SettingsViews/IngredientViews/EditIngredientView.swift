@@ -2,8 +2,6 @@
 //  EditIngredientView.swift
 //  Ratatouille
 //
-//  Created by Marius Pettersen on 01/12/2023.
-//
 
 import SwiftUI
 

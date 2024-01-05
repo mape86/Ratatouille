@@ -1,9 +1,7 @@
 //
 //  EditAreaView.swift
 //  Ratatouille
-//
-//  Created by Marius Pettersen on 29/11/2023.
-//
+
 
 import SwiftUI
 import CoreData
@@ -15,13 +13,7 @@ struct EditAreaView: View {
     @ObservedObject var area: AreaEntity
     @State private var newAreaName: String = ""
     
-//    @FetchRequest(
-//        entity: AreaEntity.entity(),
-//        sortDescriptors: []
-//    ) var areas: FetchedResults<AreaEntity>
-    
-    
-    
+
     init(area: AreaEntity) {
         self.area = area
         _newAreaName = State(initialValue: area.areaName ?? "")

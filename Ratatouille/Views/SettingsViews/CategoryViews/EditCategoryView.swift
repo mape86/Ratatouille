@@ -2,8 +2,6 @@
 //  EditCategoryView.swift
 //  Ratatouille
 //
-//  Created by Marius Pettersen on 30/11/2023.
-//
 
 import SwiftUI
 import CoreData
